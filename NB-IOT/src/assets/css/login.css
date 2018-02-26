@@ -1,0 +1,31 @@
+.loginForm {
+  /*height: 400px;*/
+  width: 450px;
+  margin: 20px auto;
+  background: #fff;
+  box-shadow: 0 0 12px #309cc2;
+  padding: 30px 30px 0 30px;
+  border-radius: 15px;
+}
+
+.registerLabel {
+  color: #67C23A;
+  cursor: pointer;
+}
+
+.errortip {
+  font-size: 12px;
+  color: #d31723;
+  visibility: hidden;
+  display: block;
+  padding: 0 0 7px 17px;
+  line-height: 16px;
+  height: 16px;
+  text-align: left;
+  background: url("./../images/icon.png") 0-100px no-repeat;
+}
+
+.error-show {
+  visibility: visible;
+  height: auto;
+}
