@@ -1,0 +1,30 @@
+.el-menu-vertical-demo:not(.el-menu--collapse) {
+  width: 200px;
+  min-height: 400px;
+}
+
+
+
+.main {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  position: absolute;
+  top: 200px;
+  bottom: 0px;
+  overflow: hidden;
+}
+
+
+asider {
+  min-width: 400px;
+  background: #333744;
+  /*&::-webkit-scrollbar {*/
+
+   /*}*/
+  /*&.showSidebar {*/
+  /*overflow-x: hidden;*/
+  /*overflow-y: auto;*/
+   /*}*/
+}

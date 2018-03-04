@@ -13,10 +13,10 @@
         <el-form :model="loginInfo" status-icon :rules="rules" ref="loginInfo" label-width="100px" class="loginForm">
           <span class="errortip error-show" v-show="loginInfo.errorTip">用户名或密码错误</span>
           <el-form-item label="账号" prop="userName">
-            <el-input v-model="loginInfo.userName"></el-input>
+            <el-input v-model="loginInfo.userName" clearable></el-input>
           </el-form-item>
           <el-form-item label="密码" prop="userPwd">
-            <el-input v-model="loginInfo.userPwd" type="password" auto-complete="off"></el-input>
+            <el-input v-model="loginInfo.userPwd" type="password" auto-complete="off" @keyup.enter.native="login" clearable></el-input>
           </el-form-item>
 
           <el-form-item>
@@ -82,6 +82,15 @@
                 this.loginInfo.errorTip = false;
                 this.loginInfo.nickName = res.result.userName;
                 //this.$router.push('/backmangement');
+                this.$emit('loginSuccessfully', res.result.userName);
+                this.$notify({
+                  title: '登陆成功',
+                  message: '用户名: ' + res.result.userName,
+                  type: 'success'
+                });
+                this.$router.push('/mainControl');
+                // let user = localStorage.getItem(res.result.userName);
+                //   console.log(JSON.parse(user));
               } else {
                 this.loginInfo.errorTip = true;
               }

@@ -1,13 +1,27 @@
 <template>
   <!--<div id="app">-->
     <!--<img src="./assets/logo.png">-->
-    <router-view></router-view>
+  <keep-alive>
+    <router-view @loginSuccessfully="loginSuccessfully"></router-view>
+  </keep-alive>
   <!--</div>-->
 </template>
 
 <script>
 export default {
-  name: 'App'
+  name: 'App',
+  data() {
+    return {
+      userName: sessionStorage.userName
+    }
+  },
+  methods: {
+    loginSuccessfully(userName) {
+      sessionStorage.userName = userName;
+      this.userName = sessionStorage.userName;
+      console.log(sessionStorage.userName);
+    }
+  }
 }
 </script>
 

@@ -6,17 +6,29 @@
     "start": "node ./bin/www"
   },
   "dependencies": {
+    "bl": "^1.2.1",
     "body-parser": "~1.18.2",
+    "capitalize": "^1.0.0",
     "coap": "^0.21.0",
+    "coap-packet": "^0.1.14",
     "cookie-parser": "~1.4.3",
     "cors": "^2.8.4",
     "debug": "~2.6.9",
+    "dgram": "^1.0.1",
+    "ee-first": "^1.1.1",
     "ejs": "^2.5.7",
     "express": "~4.15.5",
+    "fastseries": "^1.7.2",
+    "iconv-lite": "^0.4.19",
+    "inherits": "^2.0.3",
     "jade": "~1.11.0",
+    "lru-cache": "^4.1.1",
+    "media-typer": "^0.3.0",
     "mongoose": "^5.0.6",
     "morgan": "~1.9.0",
     "proxytable": "^1.0.1",
+    "raw-body": "^2.3.2",
+    "readable-stream": "^2.3.4",
     "serve-favicon": "~2.4.5"
   }
 }

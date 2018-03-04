@@ -8,7 +8,7 @@
         </h1>
         <ul class="nav">
           <li class="nav-item">
-            <el-input v-model="input" placeholder="搜索"></el-input>
+            <el-input v-model="input" placeholder="搜索" suffix-icon="el-icon-search"></el-input>
           </li>
           <li class="nav-item">
             <router-link to="/test">介绍</router-link>
@@ -22,11 +22,12 @@
 
             <el-dropdown v-if="nickName">
               <span class="el-dropdown-link" v-text="nickName"></span>
+              <i class="el-icon-arrow-down el-icon--right" icon="el-icon-arrow-down"></i>
               <el-dropdown-menu slot="dropdown" >
                 <router-link to="/users/login">
                   <el-dropdown-item>注销</el-dropdown-item>
                 </router-link>
-                <router-link to="/backmangement">
+                <router-link to="/backmangementHome">
                   <el-dropdown-item>云平台</el-dropdown-item>
                 </router-link>
               </el-dropdown-menu>
@@ -34,7 +35,7 @@
 
               <el-dropdown v-if="!nickName">
                 <span class="el-dropdown-link">
-                  登录/注册<i class="el-icon-arrow el-icon--right"></i>
+                  登录/注册<i class="el-icon-arrow-down el-icon--right" icon="el-icon-arrow-down"></i>
                 </span>
                 <el-dropdown-menu slot="dropdown">
                   <router-link to="/users/login">
@@ -59,7 +60,8 @@
         props: ['nickName'],
         data() {
           return {
-            input: ''
+            input: '',
+
           }
         }
     }

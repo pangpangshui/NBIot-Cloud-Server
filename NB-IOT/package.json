@@ -17,6 +17,7 @@
     "element-ui": "^2.2.0",
     "proxytable": "^1.0.1",
     "vue": "^2.5.2",
+    "vue-baidu-map": "^0.20.7",
     "vue-router": "^3.0.1"
   },
   "devDependencies": {

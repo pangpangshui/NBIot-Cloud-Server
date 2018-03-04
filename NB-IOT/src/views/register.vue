@@ -18,7 +18,7 @@
             <el-input v-model="loginInfo.userPwd" type="password" auto-complete="off"></el-input>
           </el-form-item>
           <el-form-item label="确认密码" prop="ensurePwd">
-            <el-input v-model="loginInfo.ensurePwd" type="password" auto-complete="off"></el-input>
+            <el-input v-model="loginInfo.ensurePwd" type="password" auto-complete="off" @keyup.enter.native="login"></el-input>
           </el-form-item>
           <el-form-item>
             <el-button type="primary" @click="register">注册</el-button>

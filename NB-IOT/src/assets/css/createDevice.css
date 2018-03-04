@@ -1,0 +1,64 @@
+.createdevices {
+  width: 1220px;
+  height: 600px;
+  margin: 20px auto;
+  background: #fff;
+  box-shadow: 0 0 12px #5269c2;
+  padding: 20px 20px 0 20px;
+  border-radius: 3px;
+}
+
+.panel-header {
+  border-bottom: 1px solid transparent;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+  padding: 10px 15px;
+  color: #333;
+  background-color: #bfdcf5;
+  border-color: #ddd;
+}
+
+
+.delistrow {
+  margin-bottom: 20px;
+  margin-left: 20px;
+  width: 1220px;
+  /*height: 1200px;*/
+&:last-child {
+   margin-bottom: 0;
+ }
+}
+
+
+.map {
+  width: 100%;
+  height: 300px;
+}
+
+
+.devicebody {
+  padding: 15px;
+}
+
+.complebtn {
+  /*margin-left: 20px;*/
+  margin-right: 20px;
+}
+
+
+.navbar {
+  margin-top: 20px;
+  margin-bottom: 20px;
+  margin-left: 20px;
+  height: 20px;
+&:last-child {
+   margin-bottom: 0;
+ }
+}
+
+
+.container {
+  height: 1000px;
+  width: 1400px;
+  border: 1px solid #eee;
+}
