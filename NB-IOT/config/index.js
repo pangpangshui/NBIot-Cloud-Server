@@ -12,11 +12,11 @@ module.exports = {
     assetsPublicPath: '/',
     proxyTable: {
       '/users/*': {
-        target: 'http://127.0.0.1:3000',
+        target: 'http://193.112.57.70:3000',
         changeOrigin: true
       },
       '/coap': {
-        target: 'http://127.0.0.1:3000',
+        target: 'http://193.112.57.70:3000',
         changeOrigin: true
       }
     },

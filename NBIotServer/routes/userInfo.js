@@ -3,7 +3,7 @@ var router = express.Router();
 var mongoose = require('mongoose');
 var userInfo = require('./../model/userInfo');
 
-mongoose.connect('mongodb://zjq:123zz321@127.0.0.1:27017/NBIot')
+mongoose.connect('mongodb://username:pwd@127.0.0.1:27017/NBIot')
 
 mongoose.connection.on("connected", ()=> {
     console.log("MongoDB connect success")

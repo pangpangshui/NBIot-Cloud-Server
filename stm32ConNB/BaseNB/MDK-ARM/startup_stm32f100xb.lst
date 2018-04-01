@@ -1,0 +1,1196 @@
+
+
+
+ARM Macro Assembler    Page 1 
+
+
+    1 00000000         ;******************** (C) COPYRIGHT 2017 STMicroelectron
+                       ics ********************
+    2 00000000         ;* File Name          : startup_stm32f100xb.s
+    3 00000000         ;* Author             : MCD Application Team
+    4 00000000         ;* Version            : V4.2.0
+    5 00000000         ;* Date               : 31-March-2017
+    6 00000000         ;* Description        : STM32F100xB Devices vector table
+                        for MDK-ARM toolchain. 
+    7 00000000         ;*                      This module performs:
+    8 00000000         ;*                      - Set the initial SP
+    9 00000000         ;*                      - Set the initial PC == Reset_Ha
+                       ndler
+   10 00000000         ;*                      - Set the vector table entries w
+                       ith the exceptions ISR address
+   11 00000000         ;*                      - Configure the clock system
+   12 00000000         ;*                      - Branches to __main in the C li
+                       brary (which eventually
+   13 00000000         ;*                        calls main()).
+   14 00000000         ;*                      After Reset the Cortex-M3 proces
+                       sor is in Thread mode,
+   15 00000000         ;*                      priority is Privileged, and the 
+                       Stack is set to Main.
+   16 00000000         ;*******************************************************
+                       *************************
+   17 00000000         ;*
+   18 00000000         ;* <h2><center>&copy; COPYRIGHT(c) 2017 STMicroelectroni
+                       cs</center></h2>
+   19 00000000         ;*
+   20 00000000         ;* Redistribution and use in source and binary forms, wi
+                       th or without modification,
+   21 00000000         ;* are permitted provided that the following conditions 
+                       are met:
+   22 00000000         ;*   1. Redistributions of source code must retain the a
+                       bove copyright notice,
+   23 00000000         ;*      this list of conditions and the following discla
+                       imer.
+   24 00000000         ;*   2. Redistributions in binary form must reproduce th
+                       e above copyright notice,
+   25 00000000         ;*      this list of conditions and the following discla
+                       imer in the documentation
+   26 00000000         ;*      and/or other materials provided with the distrib
+                       ution.
+   27 00000000         ;*   3. Neither the name of STMicroelectronics nor the n
+                       ames of its contributors
+   28 00000000         ;*      may be used to endorse or promote products deriv
+                       ed from this software
+   29 00000000         ;*      without specific prior written permission.
+   30 00000000         ;*
+   31 00000000         ;* THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AN
+                       D CONTRIBUTORS "AS IS"
+   32 00000000         ;* AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT
+                        NOT LIMITED TO, THE
+   33 00000000         ;* IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+                        A PARTICULAR PURPOSE ARE
+   34 00000000         ;* DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR
+                        CONTRIBUTORS BE LIABLE
+   35 00000000         ;* FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPL
+                       ARY, OR CONSEQUENTIAL
+   36 00000000         ;* DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT O
+
+
+
+ARM Macro Assembler    Page 2 
+
+
+                       F SUBSTITUTE GOODS OR
+   37 00000000         ;* SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS 
+                       INTERRUPTION) HOWEVER
+   38 00000000         ;* CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CON
+                       TRACT, STRICT LIABILITY,
+   39 00000000         ;* OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING I
+                       N ANY WAY OUT OF THE USE
+   40 00000000         ;* OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY 
+                       OF SUCH DAMAGE.
+   41 00000000         ; 
+   42 00000000         ;*******************************************************
+                       ************************
+   43 00000000         
+   44 00000000         ; Amount of memory (in bytes) allocated for Stack
+   45 00000000         ; Tailor this value to your application needs
+   46 00000000         ; <h> Stack Configuration
+   47 00000000         ;   <o> Stack Size (in Bytes) <0x0-0xFFFFFFFF:8>
+   48 00000000         ; </h>
+   49 00000000         
+   50 00000000 00000400 
+                       Stack_Size
+                               EQU              0x400
+   51 00000000         
+   52 00000000                 AREA             STACK, NOINIT, READWRITE, ALIGN
+=3
+   53 00000000         Stack_Mem
+                               SPACE            Stack_Size
+   54 00000400         __initial_sp
+   55 00000400         
+   56 00000400         
+   57 00000400         ; <h> Heap Configuration
+   58 00000400         ;   <o>  Heap Size (in Bytes) <0x0-0xFFFFFFFF:8>
+   59 00000400         ; </h>
+   60 00000400         
+   61 00000400 00000200 
+                       Heap_Size
+                               EQU              0x200
+   62 00000400         
+   63 00000400                 AREA             HEAP, NOINIT, READWRITE, ALIGN=
+3
+   64 00000000         __heap_base
+   65 00000000         Heap_Mem
+                               SPACE            Heap_Size
+   66 00000200         __heap_limit
+   67 00000200         
+   68 00000200                 PRESERVE8
+   69 00000200                 THUMB
+   70 00000200         
+   71 00000200         
+   72 00000200         ; Vector Table Mapped to Address 0 at Reset
+   73 00000200                 AREA             RESET, DATA, READONLY
+   74 00000000                 EXPORT           __Vectors
+   75 00000000                 EXPORT           __Vectors_End
+   76 00000000                 EXPORT           __Vectors_Size
+   77 00000000         
+   78 00000000 00000000 
+                       __Vectors
+                               DCD              __initial_sp ; Top of Stack
+   79 00000004 00000000        DCD              Reset_Handler ; Reset Handler
+
+
+
+ARM Macro Assembler    Page 3 
+
+
+   80 00000008 00000000        DCD              NMI_Handler ; NMI Handler
+   81 0000000C 00000000        DCD              HardFault_Handler ; Hard Fault 
+                                                            Handler
+   82 00000010 00000000        DCD              MemManage_Handler 
+                                                            ; MPU Fault Handler
+                                                            
+   83 00000014 00000000        DCD              BusFault_Handler 
+                                                            ; Bus Fault Handler
+                                                            
+   84 00000018 00000000        DCD              UsageFault_Handler ; Usage Faul
+                                                            t Handler
+   85 0000001C 00000000        DCD              0           ; Reserved
+   86 00000020 00000000        DCD              0           ; Reserved
+   87 00000024 00000000        DCD              0           ; Reserved
+   88 00000028 00000000        DCD              0           ; Reserved
+   89 0000002C 00000000        DCD              SVC_Handler ; SVCall Handler
+   90 00000030 00000000        DCD              DebugMon_Handler ; Debug Monito
+                                                            r Handler
+   91 00000034 00000000        DCD              0           ; Reserved
+   92 00000038 00000000        DCD              PendSV_Handler ; PendSV Handler
+                                                            
+   93 0000003C 00000000        DCD              SysTick_Handler 
+                                                            ; SysTick Handler
+   94 00000040         
+   95 00000040         ; External Interrupts
+   96 00000040 00000000        DCD              WWDG_IRQHandler 
+                                                            ; Window Watchdog
+   97 00000044 00000000        DCD              PVD_IRQHandler ; PVD through EX
+                                                            TI Line detect
+   98 00000048 00000000        DCD              TAMPER_IRQHandler ; Tamper
+   99 0000004C 00000000        DCD              RTC_IRQHandler ; RTC
+  100 00000050 00000000        DCD              FLASH_IRQHandler ; Flash
+  101 00000054 00000000        DCD              RCC_IRQHandler ; RCC
+  102 00000058 00000000        DCD              EXTI0_IRQHandler ; EXTI Line 0
+  103 0000005C 00000000        DCD              EXTI1_IRQHandler ; EXTI Line 1
+  104 00000060 00000000        DCD              EXTI2_IRQHandler ; EXTI Line 2
+  105 00000064 00000000        DCD              EXTI3_IRQHandler ; EXTI Line 3
+  106 00000068 00000000        DCD              EXTI4_IRQHandler ; EXTI Line 4
+  107 0000006C 00000000        DCD              DMA1_Channel1_IRQHandler 
+                                                            ; DMA1 Channel 1
+  108 00000070 00000000        DCD              DMA1_Channel2_IRQHandler 
+                                                            ; DMA1 Channel 2
+  109 00000074 00000000        DCD              DMA1_Channel3_IRQHandler 
+                                                            ; DMA1 Channel 3
+  110 00000078 00000000        DCD              DMA1_Channel4_IRQHandler 
+                                                            ; DMA1 Channel 4
+  111 0000007C 00000000        DCD              DMA1_Channel5_IRQHandler 
+                                                            ; DMA1 Channel 5
+  112 00000080 00000000        DCD              DMA1_Channel6_IRQHandler 
+                                                            ; DMA1 Channel 6
+  113 00000084 00000000        DCD              DMA1_Channel7_IRQHandler 
+                                                            ; DMA1 Channel 7
+  114 00000088 00000000        DCD              ADC1_IRQHandler ; ADC1
+  115 0000008C 00000000        DCD              0           ; Reserved
+  116 00000090 00000000        DCD              0           ; Reserved
+  117 00000094 00000000        DCD              0           ; Reserved
+  118 00000098 00000000        DCD              0           ; Reserved
+  119 0000009C 00000000        DCD              EXTI9_5_IRQHandler 
+                                                            ; EXTI Line 9..5
+
+
+
+ARM Macro Assembler    Page 4 
+
+
+  120 000000A0 00000000        DCD              TIM1_BRK_TIM15_IRQHandler ; TIM
+                                                            1 Break and TIM15
+  121 000000A4 00000000        DCD              TIM1_UP_TIM16_IRQHandler ; TIM1
+                                                             Update and TIM16
+  122 000000A8 00000000        DCD              TIM1_TRG_COM_TIM17_IRQHandler ;
+                                                             TIM1 Trigger and C
+                                                            ommutation and TIM1
+                                                            7
+  123 000000AC 00000000        DCD              TIM1_CC_IRQHandler ; TIM1 Captu
+                                                            re Compare
+  124 000000B0 00000000        DCD              TIM2_IRQHandler ; TIM2
+  125 000000B4 00000000        DCD              TIM3_IRQHandler ; TIM3
+  126 000000B8 00000000        DCD              TIM4_IRQHandler ; TIM4
+  127 000000BC 00000000        DCD              I2C1_EV_IRQHandler ; I2C1 Event
+                                                            
+  128 000000C0 00000000        DCD              I2C1_ER_IRQHandler ; I2C1 Error
+                                                            
+  129 000000C4 00000000        DCD              I2C2_EV_IRQHandler ; I2C2 Event
+                                                            
+  130 000000C8 00000000        DCD              I2C2_ER_IRQHandler ; I2C2 Error
+                                                            
+  131 000000CC 00000000        DCD              SPI1_IRQHandler ; SPI1
+  132 000000D0 00000000        DCD              SPI2_IRQHandler ; SPI2
+  133 000000D4 00000000        DCD              USART1_IRQHandler ; USART1
+  134 000000D8 00000000        DCD              USART2_IRQHandler ; USART2
+  135 000000DC 00000000        DCD              USART3_IRQHandler ; USART3
+  136 000000E0 00000000        DCD              EXTI15_10_IRQHandler 
+                                                            ; EXTI Line 15..10
+  137 000000E4 00000000        DCD              RTC_Alarm_IRQHandler ; RTC Alar
+                                                            m through EXTI Line
+                                                            
+  138 000000E8 00000000        DCD              CEC_IRQHandler ; HDMI-CEC
+  139 000000EC 00000000        DCD              0           ; Reserved
+  140 000000F0 00000000        DCD              0           ; Reserved
+  141 000000F4 00000000        DCD              0           ; Reserved
+  142 000000F8 00000000        DCD              0           ; Reserved 
+  143 000000FC 00000000        DCD              0           ; Reserved
+  144 00000100 00000000        DCD              0           ; Reserved
+  145 00000104 00000000        DCD              0           ; Reserved
+  146 00000108 00000000        DCD              0           ; Reserved 
+  147 0000010C 00000000        DCD              0           ; Reserved
+  148 00000110 00000000        DCD              0           ; Reserved
+  149 00000114 00000000        DCD              0           ; Reserved
+  150 00000118 00000000        DCD              TIM6_DAC_IRQHandler ; TIM6 and 
+                                                            DAC underrun
+  151 0000011C 00000000        DCD              TIM7_IRQHandler ; TIM7
+  152 00000120         __Vectors_End
+  153 00000120         
+  154 00000120 00000120 
+                       __Vectors_Size
+                               EQU              __Vectors_End - __Vectors
+  155 00000120         
+  156 00000120                 AREA             |.text|, CODE, READONLY
+  157 00000000         
+  158 00000000         ; Reset handler
+  159 00000000         Reset_Handler
+                               PROC
+  160 00000000                 EXPORT           Reset_Handler             [WEAK
+]
+
+
+
+ARM Macro Assembler    Page 5 
+
+
+  161 00000000                 IMPORT           __main
+  162 00000000                 IMPORT           SystemInit
+  163 00000000 4806            LDR              R0, =SystemInit
+  164 00000002 4780            BLX              R0
+  165 00000004 4806            LDR              R0, =__main
+  166 00000006 4700            BX               R0
+  167 00000008                 ENDP
+  168 00000008         
+  169 00000008         ; Dummy Exception Handlers (infinite loops which can be 
+                       modified)
+  170 00000008         
+  171 00000008         NMI_Handler
+                               PROC
+  172 00000008                 EXPORT           NMI_Handler                    
+  [WEAK]
+  173 00000008 E7FE            B                .
+  174 0000000A                 ENDP
+  176 0000000A         HardFault_Handler
+                               PROC
+  177 0000000A                 EXPORT           HardFault_Handler              
+  [WEAK]
+  178 0000000A E7FE            B                .
+  179 0000000C                 ENDP
+  181 0000000C         MemManage_Handler
+                               PROC
+  182 0000000C                 EXPORT           MemManage_Handler              
+  [WEAK]
+  183 0000000C E7FE            B                .
+  184 0000000E                 ENDP
+  186 0000000E         BusFault_Handler
+                               PROC
+  187 0000000E                 EXPORT           BusFault_Handler               
+  [WEAK]
+  188 0000000E E7FE            B                .
+  189 00000010                 ENDP
+  191 00000010         UsageFault_Handler
+                               PROC
+  192 00000010                 EXPORT           UsageFault_Handler             
+  [WEAK]
+  193 00000010 E7FE            B                .
+  194 00000012                 ENDP
+  195 00000012         SVC_Handler
+                               PROC
+  196 00000012                 EXPORT           SVC_Handler                    
+  [WEAK]
+  197 00000012 E7FE            B                .
+  198 00000014                 ENDP
+  200 00000014         DebugMon_Handler
+                               PROC
+  201 00000014                 EXPORT           DebugMon_Handler               
+  [WEAK]
+  202 00000014 E7FE            B                .
+  203 00000016                 ENDP
+  204 00000016         PendSV_Handler
+                               PROC
+  205 00000016                 EXPORT           PendSV_Handler                 
+  [WEAK]
+  206 00000016 E7FE            B                .
+  207 00000018                 ENDP
+
+
+
+ARM Macro Assembler    Page 6 
+
+
+  208 00000018         SysTick_Handler
+                               PROC
+  209 00000018                 EXPORT           SysTick_Handler                
+  [WEAK]
+  210 00000018 E7FE            B                .
+  211 0000001A                 ENDP
+  212 0000001A         
+  213 0000001A         Default_Handler
+                               PROC
+  214 0000001A         
+  215 0000001A                 EXPORT           WWDG_IRQHandler                
+  [WEAK]
+  216 0000001A                 EXPORT           PVD_IRQHandler                 
+  [WEAK]
+  217 0000001A                 EXPORT           TAMPER_IRQHandler              
+  [WEAK]
+  218 0000001A                 EXPORT           RTC_IRQHandler                 
+  [WEAK]
+  219 0000001A                 EXPORT           FLASH_IRQHandler               
+  [WEAK]
+  220 0000001A                 EXPORT           RCC_IRQHandler                 
+  [WEAK]
+  221 0000001A                 EXPORT           EXTI0_IRQHandler               
+  [WEAK]
+  222 0000001A                 EXPORT           EXTI1_IRQHandler               
+  [WEAK]
+  223 0000001A                 EXPORT           EXTI2_IRQHandler               
+  [WEAK]
+  224 0000001A                 EXPORT           EXTI3_IRQHandler               
+  [WEAK]
+  225 0000001A                 EXPORT           EXTI4_IRQHandler               
+  [WEAK]
+  226 0000001A                 EXPORT           DMA1_Channel1_IRQHandler       
+  [WEAK]
+  227 0000001A                 EXPORT           DMA1_Channel2_IRQHandler       
+  [WEAK]
+  228 0000001A                 EXPORT           DMA1_Channel3_IRQHandler       
+  [WEAK]
+  229 0000001A                 EXPORT           DMA1_Channel4_IRQHandler       
+  [WEAK]
+  230 0000001A                 EXPORT           DMA1_Channel5_IRQHandler       
+  [WEAK]
+  231 0000001A                 EXPORT           DMA1_Channel6_IRQHandler       
+  [WEAK]
+  232 0000001A                 EXPORT           DMA1_Channel7_IRQHandler       
+  [WEAK]
+  233 0000001A                 EXPORT           ADC1_IRQHandler                
+  [WEAK]
+  234 0000001A                 EXPORT           EXTI9_5_IRQHandler             
+  [WEAK]
+  235 0000001A                 EXPORT           TIM1_BRK_TIM15_IRQHandler      
+  [WEAK]
+  236 0000001A                 EXPORT           TIM1_UP_TIM16_IRQHandler       
+  [WEAK]
+  237 0000001A                 EXPORT           TIM1_TRG_COM_TIM17_IRQHandler  
+  [WEAK]
+  238 0000001A                 EXPORT           TIM1_CC_IRQHandler             
+  [WEAK]
+  239 0000001A                 EXPORT           TIM2_IRQHandler                
+
+
+
+ARM Macro Assembler    Page 7 
+
+
+  [WEAK]
+  240 0000001A                 EXPORT           TIM3_IRQHandler                
+  [WEAK]
+  241 0000001A                 EXPORT           TIM4_IRQHandler                
+  [WEAK]
+  242 0000001A                 EXPORT           I2C1_EV_IRQHandler             
+  [WEAK]
+  243 0000001A                 EXPORT           I2C1_ER_IRQHandler             
+  [WEAK]
+  244 0000001A                 EXPORT           I2C2_EV_IRQHandler             
+  [WEAK]
+  245 0000001A                 EXPORT           I2C2_ER_IRQHandler             
+  [WEAK]
+  246 0000001A                 EXPORT           SPI1_IRQHandler                
+  [WEAK]
+  247 0000001A                 EXPORT           SPI2_IRQHandler                
+  [WEAK]
+  248 0000001A                 EXPORT           USART1_IRQHandler              
+  [WEAK]
+  249 0000001A                 EXPORT           USART2_IRQHandler              
+  [WEAK]
+  250 0000001A                 EXPORT           USART3_IRQHandler              
+  [WEAK]
+  251 0000001A                 EXPORT           EXTI15_10_IRQHandler           
+  [WEAK]
+  252 0000001A                 EXPORT           RTC_Alarm_IRQHandler           
+   [WEAK]
+  253 0000001A                 EXPORT           CEC_IRQHandler                 
+  [WEAK]
+  254 0000001A                 EXPORT           TIM6_DAC_IRQHandler            
+  [WEAK]
+  255 0000001A                 EXPORT           TIM7_IRQHandler                
+  [WEAK]
+  256 0000001A         
+  257 0000001A         WWDG_IRQHandler
+  258 0000001A         PVD_IRQHandler
+  259 0000001A         TAMPER_IRQHandler
+  260 0000001A         RTC_IRQHandler
+  261 0000001A         FLASH_IRQHandler
+  262 0000001A         RCC_IRQHandler
+  263 0000001A         EXTI0_IRQHandler
+  264 0000001A         EXTI1_IRQHandler
+  265 0000001A         EXTI2_IRQHandler
+  266 0000001A         EXTI3_IRQHandler
+  267 0000001A         EXTI4_IRQHandler
+  268 0000001A         DMA1_Channel1_IRQHandler
+  269 0000001A         DMA1_Channel2_IRQHandler
+  270 0000001A         DMA1_Channel3_IRQHandler
+  271 0000001A         DMA1_Channel4_IRQHandler
+  272 0000001A         DMA1_Channel5_IRQHandler
+  273 0000001A         DMA1_Channel6_IRQHandler
+  274 0000001A         DMA1_Channel7_IRQHandler
+  275 0000001A         ADC1_IRQHandler
+  276 0000001A         EXTI9_5_IRQHandler
+  277 0000001A         TIM1_BRK_TIM15_IRQHandler
+  278 0000001A         TIM1_UP_TIM16_IRQHandler
+  279 0000001A         TIM1_TRG_COM_TIM17_IRQHandler
+  280 0000001A         TIM1_CC_IRQHandler
+  281 0000001A         TIM2_IRQHandler
+
+
+
+ARM Macro Assembler    Page 8 
+
+
+  282 0000001A         TIM3_IRQHandler
+  283 0000001A         TIM4_IRQHandler
+  284 0000001A         I2C1_EV_IRQHandler
+  285 0000001A         I2C1_ER_IRQHandler
+  286 0000001A         I2C2_EV_IRQHandler
+  287 0000001A         I2C2_ER_IRQHandler
+  288 0000001A         SPI1_IRQHandler
+  289 0000001A         SPI2_IRQHandler
+  290 0000001A         USART1_IRQHandler
+  291 0000001A         USART2_IRQHandler
+  292 0000001A         USART3_IRQHandler
+  293 0000001A         EXTI15_10_IRQHandler
+  294 0000001A         RTC_Alarm_IRQHandler
+  295 0000001A         CEC_IRQHandler
+  296 0000001A         TIM6_DAC_IRQHandler
+  297 0000001A         TIM7_IRQHandler
+  298 0000001A E7FE            B                .
+  299 0000001C         
+  300 0000001C                 ENDP
+  301 0000001C         
+  302 0000001C                 ALIGN
+  303 0000001C         
+  304 0000001C         ;*******************************************************
+                       ************************
+  305 0000001C         ; User Stack and Heap initialization
+  306 0000001C         ;*******************************************************
+                       ************************
+  307 0000001C                 IF               :DEF:__MICROLIB
+  308 0000001C         
+  309 0000001C                 EXPORT           __initial_sp
+  310 0000001C                 EXPORT           __heap_base
+  311 0000001C                 EXPORT           __heap_limit
+  312 0000001C         
+  313 0000001C                 ELSE
+  328                          ENDIF
+  329 0000001C         
+  330 0000001C                 END
+              00000000 
+              00000000 
+Command Line: --debug --xref --diag_suppress=9931 --cpu=Cortex-M3 --apcs=interw
+ork --depend=basenb\startup_stm32f100xb.d -obasenb\startup_stm32f100xb.o -IC:\U
+sers\SHUI\Desktop\graduation_design\NBIOT\stm32ConNB\BaseNB\MDK-ARM\RTE -IE:\Ke
+il_v5\ARM\PACK\ARM\CMSIS\4.2.0\CMSIS\Include -IE:\Keil_v5\ARM\PACK\Keil\STM32F1
+xx_DFP\1.0.5\Device\Include --predefine="__MICROLIB SETA 1" --predefine="__UVIS
+ION_VERSION SETA 514" --predefine="_RTE_ SETA 1" --predefine="STM32F10X_MD_VL S
+ETA 1" --list=startup_stm32f100xb.lst startup_stm32f100xb.s
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+Relocatable symbols
+
+STACK 00000000
+
+Symbol: STACK
+   Definitions
+      At line 52 in file startup_stm32f100xb.s
+   Uses
+      None
+Comment: STACK unused
+Stack_Mem 00000000
+
+Symbol: Stack_Mem
+   Definitions
+      At line 53 in file startup_stm32f100xb.s
+   Uses
+      None
+Comment: Stack_Mem unused
+__initial_sp 00000400
+
+Symbol: __initial_sp
+   Definitions
+      At line 54 in file startup_stm32f100xb.s
+   Uses
+      At line 78 in file startup_stm32f100xb.s
+      At line 309 in file startup_stm32f100xb.s
+
+3 symbols
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+Relocatable symbols
+
+HEAP 00000000
+
+Symbol: HEAP
+   Definitions
+      At line 63 in file startup_stm32f100xb.s
+   Uses
+      None
+Comment: HEAP unused
+Heap_Mem 00000000
+
+Symbol: Heap_Mem
+   Definitions
+      At line 65 in file startup_stm32f100xb.s
+   Uses
+      None
+Comment: Heap_Mem unused
+__heap_base 00000000
+
+Symbol: __heap_base
+   Definitions
+      At line 64 in file startup_stm32f100xb.s
+   Uses
+      At line 310 in file startup_stm32f100xb.s
+Comment: __heap_base used once
+__heap_limit 00000200
+
+Symbol: __heap_limit
+   Definitions
+      At line 66 in file startup_stm32f100xb.s
+   Uses
+      At line 311 in file startup_stm32f100xb.s
+Comment: __heap_limit used once
+4 symbols
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+Relocatable symbols
+
+RESET 00000000
+
+Symbol: RESET
+   Definitions
+      At line 73 in file startup_stm32f100xb.s
+   Uses
+      None
+Comment: RESET unused
+__Vectors 00000000
+
+Symbol: __Vectors
+   Definitions
+      At line 78 in file startup_stm32f100xb.s
+   Uses
+      At line 74 in file startup_stm32f100xb.s
+      At line 154 in file startup_stm32f100xb.s
+
+__Vectors_End 00000120
+
+Symbol: __Vectors_End
+   Definitions
+      At line 152 in file startup_stm32f100xb.s
+   Uses
+      At line 75 in file startup_stm32f100xb.s
+      At line 154 in file startup_stm32f100xb.s
+
+3 symbols
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+Relocatable symbols
+
+.text 00000000
+
+Symbol: .text
+   Definitions
+      At line 156 in file startup_stm32f100xb.s
+   Uses
+      None
+Comment: .text unused
+ADC1_IRQHandler 0000001A
+
+Symbol: ADC1_IRQHandler
+   Definitions
+      At line 275 in file startup_stm32f100xb.s
+   Uses
+      At line 114 in file startup_stm32f100xb.s
+      At line 233 in file startup_stm32f100xb.s
+
+BusFault_Handler 0000000E
+
+Symbol: BusFault_Handler
+   Definitions
+      At line 186 in file startup_stm32f100xb.s
+   Uses
+      At line 83 in file startup_stm32f100xb.s
+      At line 187 in file startup_stm32f100xb.s
+
+CEC_IRQHandler 0000001A
+
+Symbol: CEC_IRQHandler
+   Definitions
+      At line 295 in file startup_stm32f100xb.s
+   Uses
+      At line 138 in file startup_stm32f100xb.s
+      At line 253 in file startup_stm32f100xb.s
+
+DMA1_Channel1_IRQHandler 0000001A
+
+Symbol: DMA1_Channel1_IRQHandler
+   Definitions
+      At line 268 in file startup_stm32f100xb.s
+   Uses
+      At line 107 in file startup_stm32f100xb.s
+      At line 226 in file startup_stm32f100xb.s
+
+DMA1_Channel2_IRQHandler 0000001A
+
+Symbol: DMA1_Channel2_IRQHandler
+   Definitions
+      At line 269 in file startup_stm32f100xb.s
+   Uses
+      At line 108 in file startup_stm32f100xb.s
+      At line 227 in file startup_stm32f100xb.s
+
+DMA1_Channel3_IRQHandler 0000001A
+
+Symbol: DMA1_Channel3_IRQHandler
+   Definitions
+      At line 270 in file startup_stm32f100xb.s
+   Uses
+
+
+
+ARM Macro Assembler    Page 2 Alphabetic symbol ordering
+Relocatable symbols
+
+      At line 109 in file startup_stm32f100xb.s
+      At line 228 in file startup_stm32f100xb.s
+
+DMA1_Channel4_IRQHandler 0000001A
+
+Symbol: DMA1_Channel4_IRQHandler
+   Definitions
+      At line 271 in file startup_stm32f100xb.s
+   Uses
+      At line 110 in file startup_stm32f100xb.s
+      At line 229 in file startup_stm32f100xb.s
+
+DMA1_Channel5_IRQHandler 0000001A
+
+Symbol: DMA1_Channel5_IRQHandler
+   Definitions
+      At line 272 in file startup_stm32f100xb.s
+   Uses
+      At line 111 in file startup_stm32f100xb.s
+      At line 230 in file startup_stm32f100xb.s
+
+DMA1_Channel6_IRQHandler 0000001A
+
+Symbol: DMA1_Channel6_IRQHandler
+   Definitions
+      At line 273 in file startup_stm32f100xb.s
+   Uses
+      At line 112 in file startup_stm32f100xb.s
+      At line 231 in file startup_stm32f100xb.s
+
+DMA1_Channel7_IRQHandler 0000001A
+
+Symbol: DMA1_Channel7_IRQHandler
+   Definitions
+      At line 274 in file startup_stm32f100xb.s
+   Uses
+      At line 113 in file startup_stm32f100xb.s
+      At line 232 in file startup_stm32f100xb.s
+
+DebugMon_Handler 00000014
+
+Symbol: DebugMon_Handler
+   Definitions
+      At line 200 in file startup_stm32f100xb.s
+   Uses
+      At line 90 in file startup_stm32f100xb.s
+      At line 201 in file startup_stm32f100xb.s
+
+Default_Handler 0000001A
+
+Symbol: Default_Handler
+   Definitions
+      At line 213 in file startup_stm32f100xb.s
+   Uses
+      None
+Comment: Default_Handler unused
+EXTI0_IRQHandler 0000001A
+
+Symbol: EXTI0_IRQHandler
+
+
+
+ARM Macro Assembler    Page 3 Alphabetic symbol ordering
+Relocatable symbols
+
+   Definitions
+      At line 263 in file startup_stm32f100xb.s
+   Uses
+      At line 102 in file startup_stm32f100xb.s
+      At line 221 in file startup_stm32f100xb.s
+
+EXTI15_10_IRQHandler 0000001A
+
+Symbol: EXTI15_10_IRQHandler
+   Definitions
+      At line 293 in file startup_stm32f100xb.s
+   Uses
+      At line 136 in file startup_stm32f100xb.s
+      At line 251 in file startup_stm32f100xb.s
+
+EXTI1_IRQHandler 0000001A
+
+Symbol: EXTI1_IRQHandler
+   Definitions
+      At line 264 in file startup_stm32f100xb.s
+   Uses
+      At line 103 in file startup_stm32f100xb.s
+      At line 222 in file startup_stm32f100xb.s
+
+EXTI2_IRQHandler 0000001A
+
+Symbol: EXTI2_IRQHandler
+   Definitions
+      At line 265 in file startup_stm32f100xb.s
+   Uses
+      At line 104 in file startup_stm32f100xb.s
+      At line 223 in file startup_stm32f100xb.s
+
+EXTI3_IRQHandler 0000001A
+
+Symbol: EXTI3_IRQHandler
+   Definitions
+      At line 266 in file startup_stm32f100xb.s
+   Uses
+      At line 105 in file startup_stm32f100xb.s
+      At line 224 in file startup_stm32f100xb.s
+
+EXTI4_IRQHandler 0000001A
+
+Symbol: EXTI4_IRQHandler
+   Definitions
+      At line 267 in file startup_stm32f100xb.s
+   Uses
+      At line 106 in file startup_stm32f100xb.s
+      At line 225 in file startup_stm32f100xb.s
+
+EXTI9_5_IRQHandler 0000001A
+
+Symbol: EXTI9_5_IRQHandler
+   Definitions
+      At line 276 in file startup_stm32f100xb.s
+   Uses
+      At line 119 in file startup_stm32f100xb.s
+      At line 234 in file startup_stm32f100xb.s
+
+
+
+ARM Macro Assembler    Page 4 Alphabetic symbol ordering
+Relocatable symbols
+
+
+FLASH_IRQHandler 0000001A
+
+Symbol: FLASH_IRQHandler
+   Definitions
+      At line 261 in file startup_stm32f100xb.s
+   Uses
+      At line 100 in file startup_stm32f100xb.s
+      At line 219 in file startup_stm32f100xb.s
+
+HardFault_Handler 0000000A
+
+Symbol: HardFault_Handler
+   Definitions
+      At line 176 in file startup_stm32f100xb.s
+   Uses
+      At line 81 in file startup_stm32f100xb.s
+      At line 177 in file startup_stm32f100xb.s
+
+I2C1_ER_IRQHandler 0000001A
+
+Symbol: I2C1_ER_IRQHandler
+   Definitions
+      At line 285 in file startup_stm32f100xb.s
+   Uses
+      At line 128 in file startup_stm32f100xb.s
+      At line 243 in file startup_stm32f100xb.s
+
+I2C1_EV_IRQHandler 0000001A
+
+Symbol: I2C1_EV_IRQHandler
+   Definitions
+      At line 284 in file startup_stm32f100xb.s
+   Uses
+      At line 127 in file startup_stm32f100xb.s
+      At line 242 in file startup_stm32f100xb.s
+
+I2C2_ER_IRQHandler 0000001A
+
+Symbol: I2C2_ER_IRQHandler
+   Definitions
+      At line 287 in file startup_stm32f100xb.s
+   Uses
+      At line 130 in file startup_stm32f100xb.s
+      At line 245 in file startup_stm32f100xb.s
+
+I2C2_EV_IRQHandler 0000001A
+
+Symbol: I2C2_EV_IRQHandler
+   Definitions
+      At line 286 in file startup_stm32f100xb.s
+   Uses
+      At line 129 in file startup_stm32f100xb.s
+      At line 244 in file startup_stm32f100xb.s
+
+MemManage_Handler 0000000C
+
+Symbol: MemManage_Handler
+   Definitions
+
+
+
+ARM Macro Assembler    Page 5 Alphabetic symbol ordering
+Relocatable symbols
+
+      At line 181 in file startup_stm32f100xb.s
+   Uses
+      At line 82 in file startup_stm32f100xb.s
+      At line 182 in file startup_stm32f100xb.s
+
+NMI_Handler 00000008
+
+Symbol: NMI_Handler
+   Definitions
+      At line 171 in file startup_stm32f100xb.s
+   Uses
+      At line 80 in file startup_stm32f100xb.s
+      At line 172 in file startup_stm32f100xb.s
+
+PVD_IRQHandler 0000001A
+
+Symbol: PVD_IRQHandler
+   Definitions
+      At line 258 in file startup_stm32f100xb.s
+   Uses
+      At line 97 in file startup_stm32f100xb.s
+      At line 216 in file startup_stm32f100xb.s
+
+PendSV_Handler 00000016
+
+Symbol: PendSV_Handler
+   Definitions
+      At line 204 in file startup_stm32f100xb.s
+   Uses
+      At line 92 in file startup_stm32f100xb.s
+      At line 205 in file startup_stm32f100xb.s
+
+RCC_IRQHandler 0000001A
+
+Symbol: RCC_IRQHandler
+   Definitions
+      At line 262 in file startup_stm32f100xb.s
+   Uses
+      At line 101 in file startup_stm32f100xb.s
+      At line 220 in file startup_stm32f100xb.s
+
+RTC_Alarm_IRQHandler 0000001A
+
+Symbol: RTC_Alarm_IRQHandler
+   Definitions
+      At line 294 in file startup_stm32f100xb.s
+   Uses
+      At line 137 in file startup_stm32f100xb.s
+      At line 252 in file startup_stm32f100xb.s
+
+RTC_IRQHandler 0000001A
+
+Symbol: RTC_IRQHandler
+   Definitions
+      At line 260 in file startup_stm32f100xb.s
+   Uses
+      At line 99 in file startup_stm32f100xb.s
+      At line 218 in file startup_stm32f100xb.s
+
+
+
+
+ARM Macro Assembler    Page 6 Alphabetic symbol ordering
+Relocatable symbols
+
+Reset_Handler 00000000
+
+Symbol: Reset_Handler
+   Definitions
+      At line 159 in file startup_stm32f100xb.s
+   Uses
+      At line 79 in file startup_stm32f100xb.s
+      At line 160 in file startup_stm32f100xb.s
+
+SPI1_IRQHandler 0000001A
+
+Symbol: SPI1_IRQHandler
+   Definitions
+      At line 288 in file startup_stm32f100xb.s
+   Uses
+      At line 131 in file startup_stm32f100xb.s
+      At line 246 in file startup_stm32f100xb.s
+
+SPI2_IRQHandler 0000001A
+
+Symbol: SPI2_IRQHandler
+   Definitions
+      At line 289 in file startup_stm32f100xb.s
+   Uses
+      At line 132 in file startup_stm32f100xb.s
+      At line 247 in file startup_stm32f100xb.s
+
+SVC_Handler 00000012
+
+Symbol: SVC_Handler
+   Definitions
+      At line 195 in file startup_stm32f100xb.s
+   Uses
+      At line 89 in file startup_stm32f100xb.s
+      At line 196 in file startup_stm32f100xb.s
+
+SysTick_Handler 00000018
+
+Symbol: SysTick_Handler
+   Definitions
+      At line 208 in file startup_stm32f100xb.s
+   Uses
+      At line 93 in file startup_stm32f100xb.s
+      At line 209 in file startup_stm32f100xb.s
+
+TAMPER_IRQHandler 0000001A
+
+Symbol: TAMPER_IRQHandler
+   Definitions
+      At line 259 in file startup_stm32f100xb.s
+   Uses
+      At line 98 in file startup_stm32f100xb.s
+      At line 217 in file startup_stm32f100xb.s
+
+TIM1_BRK_TIM15_IRQHandler 0000001A
+
+Symbol: TIM1_BRK_TIM15_IRQHandler
+   Definitions
+      At line 277 in file startup_stm32f100xb.s
+
+
+
+ARM Macro Assembler    Page 7 Alphabetic symbol ordering
+Relocatable symbols
+
+   Uses
+      At line 120 in file startup_stm32f100xb.s
+      At line 235 in file startup_stm32f100xb.s
+
+TIM1_CC_IRQHandler 0000001A
+
+Symbol: TIM1_CC_IRQHandler
+   Definitions
+      At line 280 in file startup_stm32f100xb.s
+   Uses
+      At line 123 in file startup_stm32f100xb.s
+      At line 238 in file startup_stm32f100xb.s
+
+TIM1_TRG_COM_TIM17_IRQHandler 0000001A
+
+Symbol: TIM1_TRG_COM_TIM17_IRQHandler
+   Definitions
+      At line 279 in file startup_stm32f100xb.s
+   Uses
+      At line 122 in file startup_stm32f100xb.s
+      At line 237 in file startup_stm32f100xb.s
+
+TIM1_UP_TIM16_IRQHandler 0000001A
+
+Symbol: TIM1_UP_TIM16_IRQHandler
+   Definitions
+      At line 278 in file startup_stm32f100xb.s
+   Uses
+      At line 121 in file startup_stm32f100xb.s
+      At line 236 in file startup_stm32f100xb.s
+
+TIM2_IRQHandler 0000001A
+
+Symbol: TIM2_IRQHandler
+   Definitions
+      At line 281 in file startup_stm32f100xb.s
+   Uses
+      At line 124 in file startup_stm32f100xb.s
+      At line 239 in file startup_stm32f100xb.s
+
+TIM3_IRQHandler 0000001A
+
+Symbol: TIM3_IRQHandler
+   Definitions
+      At line 282 in file startup_stm32f100xb.s
+   Uses
+      At line 125 in file startup_stm32f100xb.s
+      At line 240 in file startup_stm32f100xb.s
+
+TIM4_IRQHandler 0000001A
+
+Symbol: TIM4_IRQHandler
+   Definitions
+      At line 283 in file startup_stm32f100xb.s
+   Uses
+      At line 126 in file startup_stm32f100xb.s
+      At line 241 in file startup_stm32f100xb.s
+
+TIM6_DAC_IRQHandler 0000001A
+
+
+
+ARM Macro Assembler    Page 8 Alphabetic symbol ordering
+Relocatable symbols
+
+
+Symbol: TIM6_DAC_IRQHandler
+   Definitions
+      At line 296 in file startup_stm32f100xb.s
+   Uses
+      At line 150 in file startup_stm32f100xb.s
+      At line 254 in file startup_stm32f100xb.s
+
+TIM7_IRQHandler 0000001A
+
+Symbol: TIM7_IRQHandler
+   Definitions
+      At line 297 in file startup_stm32f100xb.s
+   Uses
+      At line 151 in file startup_stm32f100xb.s
+      At line 255 in file startup_stm32f100xb.s
+
+USART1_IRQHandler 0000001A
+
+Symbol: USART1_IRQHandler
+   Definitions
+      At line 290 in file startup_stm32f100xb.s
+   Uses
+      At line 133 in file startup_stm32f100xb.s
+      At line 248 in file startup_stm32f100xb.s
+
+USART2_IRQHandler 0000001A
+
+Symbol: USART2_IRQHandler
+   Definitions
+      At line 291 in file startup_stm32f100xb.s
+   Uses
+      At line 134 in file startup_stm32f100xb.s
+      At line 249 in file startup_stm32f100xb.s
+
+USART3_IRQHandler 0000001A
+
+Symbol: USART3_IRQHandler
+   Definitions
+      At line 292 in file startup_stm32f100xb.s
+   Uses
+      At line 135 in file startup_stm32f100xb.s
+      At line 250 in file startup_stm32f100xb.s
+
+UsageFault_Handler 00000010
+
+Symbol: UsageFault_Handler
+   Definitions
+      At line 191 in file startup_stm32f100xb.s
+   Uses
+      At line 84 in file startup_stm32f100xb.s
+      At line 192 in file startup_stm32f100xb.s
+
+WWDG_IRQHandler 0000001A
+
+Symbol: WWDG_IRQHandler
+   Definitions
+      At line 257 in file startup_stm32f100xb.s
+   Uses
+
+
+
+ARM Macro Assembler    Page 9 Alphabetic symbol ordering
+Relocatable symbols
+
+      At line 96 in file startup_stm32f100xb.s
+      At line 215 in file startup_stm32f100xb.s
+
+53 symbols
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+Absolute symbols
+
+Heap_Size 00000200
+
+Symbol: Heap_Size
+   Definitions
+      At line 61 in file startup_stm32f100xb.s
+   Uses
+      At line 65 in file startup_stm32f100xb.s
+Comment: Heap_Size used once
+Stack_Size 00000400
+
+Symbol: Stack_Size
+   Definitions
+      At line 50 in file startup_stm32f100xb.s
+   Uses
+      At line 53 in file startup_stm32f100xb.s
+Comment: Stack_Size used once
+__Vectors_Size 00000120
+
+Symbol: __Vectors_Size
+   Definitions
+      At line 154 in file startup_stm32f100xb.s
+   Uses
+      At line 76 in file startup_stm32f100xb.s
+Comment: __Vectors_Size used once
+3 symbols
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+External symbols
+
+SystemInit 00000000
+
+Symbol: SystemInit
+   Definitions
+      At line 162 in file startup_stm32f100xb.s
+   Uses
+      At line 163 in file startup_stm32f100xb.s
+Comment: SystemInit used once
+__main 00000000
+
+Symbol: __main
+   Definitions
+      At line 161 in file startup_stm32f100xb.s
+   Uses
+      At line 165 in file startup_stm32f100xb.s
+Comment: __main used once
+2 symbols
+404 symbols in table

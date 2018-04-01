@@ -58,7 +58,11 @@
 
 
 .container {
-  height: 1000px;
+  height: 800px;
   width: 1400px;
   border: 1px solid #eee;
+}
+
+.maincontent {
+  overflow: auto;
 }

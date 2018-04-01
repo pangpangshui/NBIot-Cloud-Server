@@ -1,9 +1,9 @@
 <template>
-  <div>
+  <div class="maincontaint">
     <nb-manage-header></nb-manage-header>
-    <el-main>
+    <el-main class="main">
       <!--<el-button @click="linkCoapServer">访问coap服务器</el-button>-->
-      <el-col v-bind:span="24" class="main">
+      <el-col v-bind:span="24" class="maincol">
         <aside v-bind:class="{showSidebar:!isCollapse}">
         <!--<el-radio-group v-model="isCollapse" style="margin-bottom:20px">-->
           <el-button @click.prevent="collapseMenu" type="info" plain>

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="maincontaint">
     <el-container direction="vertical" class="container">
 
       <el-row class="navbar">
@@ -48,11 +48,24 @@
 
 
               <baidu-map class="map" :center="center" :zoom="15" :scroll-wheel-zoom="true"
-                         @moving="syncCenterAndZoom" @moveend="syncCenterAndZoom" @zoomend="syncCenterAndZoom"
-                         @click="getPosition">
+                          @moveend="syncCenterAndZoom"  @click="getPosition">
+                <bm-marker :position="position" :dragging="true" @click="infoWindowOpen" animation="BMAP_ANIMATION_BOUNCE"></bm-marker>
                 <bm-navigation anchor="BMAP_ANCHOR_TOP_RIGHT"></bm-navigation>
                 <bm-geolocation anchor="BMAP_ANCHOR_BOTTOM_RIGHT" :showAddressBar="true" :autoLocation="true"></bm-geolocation>
                 <bm-city-list anchor="BMAP_ANCHOR_TOP_LEFT"></bm-city-list>
+                <!--<bm-control>-->
+                  <!--<bm-auto-complete v-model="serchaddre" :sugStyle="{zIndex: 1}">-->
+                    <!--<search-field placeholder="搜索地址"></search-field>-->
+                  <!--</bm-auto-complete>-->
+                <!--</bm-control>-->
+                <!--<bm-local-search :keyword="serchaddre" :auto-viewport="true" ></bm-local-search>-->
+
+                <bm-control :offset="{width: '10px', height: '10px'}">
+                  <bm-auto-complete v-model="serchaddre" :sugStyle="{zIndex: 1}">
+                    <el-input placeholder="搜索地址"></el-input> <!-- 这里指代一个自定义搜索框组件 -->
+                  </bm-auto-complete>
+                </bm-control>
+                <bm-local-search :keyword="serchaddre" :auto-viewport="true" ></bm-local-search>
               </baidu-map>
               <el-button type="primary" @click="onSubmit" class="complebtn">创建完成</el-button>
             </el-form>
@@ -86,7 +99,13 @@
               lng: 113.409859,
               lat: 23.066113
             },
-            zoom: 15
+            zoom: 15,
+            position: {
+              lng: 113.409859,
+              lat: 23.066113
+            },
+            serchaddre: ''
+
             // styleJson: [
             //   {
             //     "featureType": "all",
@@ -108,18 +127,54 @@
         },
         methods: {
           getPosition(e) {
-            console.log("test");
-            console.log(e.target.getAddress());
+            // let map = new BMap.Map();
+
+            const {lng, lat} =  e.target.getCenter();
+            const posi =  e.target.getCenter();
+            this.position.lng = lng;
+            this.position.lat = lat;
+            // this.addOverlay(new BMap.Marker(e.target.getCenter());
+            // console.log(this.position.lng);
+            // console.log(this.position.lat);
+            // console.log(posi.value);
+            // map.centerAndZoom(this.position, 15);
+            // // map.enableScrollWheelZoom();
+            // map.clearOverlays();    //清除地图上所有覆盖物
+            // map.addOverlay(new BMap.Marker(new BMap.Point(this.position)));    //添加标注
+
+
+            // let self = this;
+            // let geolocation = new BMap.Geolocation();
+            // geolocation.getCurrentPosition( (r) => {
+            //   if (this.getStatus() == BMAP_STATUS_SUCCESS) {
+            //     let geo = new BMap.Geocoder();
+            //     geo.getLocation(new BMap.Point(r.point.lng, r.point.lat), (result) => {
+            //       if (result) {
+            //         self.ADDRESS_DETAIL(result.addressComponents.district + result.addressComponents.street);
+            //         self.geohash = result.point.lat + "," + result.point.lng;
+            //         self.SAVE_GEOHASH(self.geohash);
+            //         self.latitude|= result.point.lat;
+            //         self.longitude = result.point.lng;
+            //         self.RECOED_ADDRESS({'latitude':result.point.lat, 'longitude':result.point.lng});
+            //       }
+            //     });
+            //   }
+            // });
+            // console.log(address_detail);
           },
           syncCenterAndZoom(e) {
             const {lng, lat} =  e.target.getCenter();
             this.center.lng = lng;
             this.center.lat = lat;
             this.zoom = e.target.getZoom();
-
+            // console.log(this.center.lng);
+            // console.log(this.center.lat);
           },
           onSubmit() {
             console.log("创建完成");
+          },
+          infoWindowOpen() {
+            console.log("tesdt");
           }
         }
     }

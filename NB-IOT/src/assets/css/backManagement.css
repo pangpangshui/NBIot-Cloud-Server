@@ -5,20 +5,23 @@
 
 
 
-.main {
+.maincol {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
   position: absolute;
-  top: 200px;
+  top: 100px;
   bottom: 0px;
-  overflow: hidden;
+  overflow: visible;
+  height: 800px;
+  width: 100%;
+  /*overflow: visible*/
 }
 
 
 asider {
-  min-width: 400px;
+  min-width: 1000px;
   background: #333744;
   /*&::-webkit-scrollbar {*/
 
@@ -27,4 +30,15 @@ asider {
   /*overflow-x: hidden;*/
   /*overflow-y: auto;*/
    /*}*/
+}
+
+.maincontent {
+
+}
+
+.main {
+  /*height: 1000px;*/
+  overflow: auto;
+  width: 2000px;
+  height: 1000px;
 }
