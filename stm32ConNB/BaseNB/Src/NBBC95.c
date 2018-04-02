@@ -1,7 +1,7 @@
 #include "NBBC95.h"
 #include <string.h>
 
-//const char* AT = AT;
+const char* AT          =   "AT";
 const char* AT_CMEE		=	"AT+CMEE";   //上报设备错误。启用结果码，使用数字型取值，参数为1
 const char* AT_CGMI		=	"AT+CGMI";			//查询设备制造商信息
 const char* AT_CGMM		=	"AT+CGMM";			//查询设备ID
@@ -20,12 +20,12 @@ const char* AT_NUESTATS	=   "AT+NUESTATS";	//获取最新的操作统计
 
 
 const NBOperaFun bc95fun = {
-    .Openbc95        =  openbc95,
-    .Initbc95        =  initbc95,
-    .InitUDPServer   =  initUDPServer_bc95,
-    .SendToUdp       =  sendToUdp_bc95,
-    .RecFromUdp      =  recFromUdp_bc95,
-    .BC95Main        =  bc95Main
+    .Openbc95           =  openbc95,
+    .Initbc95           =  initbc95,
+    .CreateUDPServer    =  createUDPServer_bc95,
+    .SendToUdp          =  sendToUdp_bc95,
+    .RecFromUdp         =  recFromUdp_bc95,
+    .BC95Main           =  bc95Main
 };
 
 #define NB_CMD_SEND_BUF_MAX_LEN 512
@@ -42,20 +42,12 @@ struct CmdBufRec{
     uint16_t len;
 }NBCmdBufRec;
 
+uint8_t NBbc95SendCMD_Usart(bc95object bc95, atcmdInfo cmdinfo);
+
 
 extern NBOperaFun bc95_OperaFun;
-
-
-uint8_t openbc95(NBModule bc95)
-{
-    if (bc95 == NULL)
-        return 0;
-    if (bc95->funcPtr->Openbc95 == NULL)
-        return 0;
-    bc95->funcPtr = (void*)&bc95fun;
-    bc95->funcPtr->Openbc95(bc95);
-    return 1;
-}
+static bc95_state nb_state = {PROCESS_NONE, 0};
+static ATcmd atcmd;
 
 void InitATcmd(atcmdInfo cmdinfo, const char* cmd, char* param, cmd_type property) 
 {
@@ -89,33 +81,94 @@ uint16_t formatATcmd(atcmdInfo cmdinfo)
     return cmdlen;  
 }
 
-uint8_t initbc95(NBModule bc95)
-{
-    uint8_t cmdlen = 0;
-    atcmdInfo cmdinfo;
-    bc95object bc95_handle = (bc95object)bc95->object;
-    InitATcmd(cmdinfo, "AT", "", CMD_EXCUTE);
-    cmdlen = formatATcmd(cmdinfo);
-    NBbc95SendCMD(bc95_handle, cmdinfo);
-    return 1;
-}
 
-
-
-uint8_t initUDPServer_bc95(NBModule bc95)
+uint8_t openbc95(NBModule bc95)
 {
     if (bc95 == NULL)
         return 0;
-    if (bc95->funcPtr == NULL)
+    if (bc95->funcPtr->Openbc95 == NULL)
         return 0;
-    bc95->funcPtr->Initbc95(bc95);
+    bc95->funcPtr = (void*)&bc95fun;
+    bc95->funcPtr->Openbc95(bc95);
     return 1;
 }
 
-uint8_t sendToUdp_bc95(NBModule bc95)
+
+uint8_t initbc95(NBModule bc95)
 {
-    
+//    uint8_t cmdlen = 0;
+//    atcmdInfo cmdinfo;
+//    bc95object bc95_handle = (bc95object)bc95->object;
+//    InitATcmd(cmdinfo, "AT", "", CMD_EXCUTE);
+//    cmdlen = formatATcmd(cmdinfo);
+//    NBbc95SendCMD(bc95_handle, cmdinfo);
+//    return 1;
+    bc95object bc95Obj = (bc95object)bc95->object;
+    if (nb_state.state != PROCESS_NONE)
+        return 0;
+    InitATcmd(&atcmd, AT, NULL, CMD_EXCUTE);
+    nb_state.state = PROCESS_INIT;
+    nb_state.sub_state = 1;
+    atcmd.max_timeout = 2000;
+    NBbc95SendCMD_Usart(bc95Obj, &atcmd);
     return 1;
+}
+
+const char* getModuleInfo_bc95(NBModule bc95)
+{
+    if (bc95 == NULL)
+        return 0;
+    if (bc95->funcPtr->getModuleInfo == NULL)
+        return 0;
+    return bc95->funcPtr->getModuleInfo(bc95);
+    
+}
+
+
+const char* getRegisterInfo_bc95(NBModule bc95)
+{
+    if (bc95 == NULL)
+        return 0;
+    if (bc95->funcPtr->getRegisterInfo == NULL)
+        return 0;
+    return bc95->funcPtr->getRegisterInfo(bc95);
+}
+
+const char* NetSign_bc95(NBModule bc95)
+{
+    if (bc95 == NULL)
+        return 0;
+    if (bc95->funcPtr->getMISIInfo == NULL)
+        return 0;
+    return bc95->funcPtr->getMISIInfo(bc95);
+}
+
+
+uint8_t isNetSign_bc95(NBModule bc95)
+{
+    if (bc95 == NULL)
+        return 0;
+    if (bc95->funcPtr->isNetSign == NULL)
+        return 0;
+    return bc95->funcPtr->isNetSign(bc95);
+}
+
+uint8_t createUDPServer_bc95(NBModule bc95)
+{
+    if (bc95 == NULL)
+        return 0;
+    if (bc95->funcPtr->CreateUDPServer == NULL)
+        return 0;
+    return bc95->funcPtr->CreateUDPServer(bc95);
+}
+
+uint8_t sendToUdp_bc95(NBModule bc95, int len, char* buf)
+{
+    if (bc95 == NULL)
+        return 0;
+    if (bc95->funcPtr->SendToUdp == NULL)
+        return 0;
+    return bc95->funcPtr->SendToUdp(bc95, len, buf);
 }
 
 uint8_t recFromUdp_bc95(NBModule bc95)
@@ -123,9 +176,22 @@ uint8_t recFromUdp_bc95(NBModule bc95)
     return 0;
 }
 
+uint8_t closeUdp_bc95(NBModule bc95)
+{
+    if (bc95 == NULL)
+        return 0;
+    if (bc95->funcPtr->CloseUdp == NULL)
+        return 0;
+    return bc95->funcPtr->CloseUdp(bc95);
+}
+
 uint8_t bc95Main(NBModule bc95)
 {
-    return 0;
+    if (bc95 == NULL)
+        return 0;
+    if (bc95->funcPtr->BC95Main == NULL)
+        return 0;
+    return bc95->funcPtr->BC95Main(bc95);
 }
 
 uint8_t NBbc95SendCMD(bc95object bc95, atcmdInfo cmdinfo) 

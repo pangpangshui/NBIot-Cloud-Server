@@ -32,3 +32,4 @@ basenb\main.o: ../Inc/usart.h
 basenb\main.o: ../Inc/NBBC95.h
 basenb\main.o: ../Inc/usart.h
 basenb\main.o: ../Inc/gpio.h
+basenb\main.o: ../Inc/NBBC95_cfg.h

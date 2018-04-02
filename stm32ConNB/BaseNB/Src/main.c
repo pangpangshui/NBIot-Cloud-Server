@@ -298,8 +298,11 @@ void MsgReportCallback(msg_type mType, int len, char* msg)
         case MSG_SIGN:
         case MSG_DEVID:
         case MSG_MANUINFO:
-        case MSG_REGESTA:
-        case MSG_UDP:
+        case MSG_REGISTER:
+        case MSG_UDP_CREATE:
+        case MSG_UDP_SEND:
+        case MSG_UDP_RECE:
+        case MSG_UDP_CLOSE:
         case MSG_COAP:
             break;
         default: break;

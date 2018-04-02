@@ -7,7 +7,7 @@
 extern int NB_MsgreportCallback(msg_type, int, char*);
 
 serialfun Serial_fun = {
-    .serialPortOpen = HAL_DMA_UsartInit,
+    //.serialPortOpen = HAL_DMA_UsartInit,
     .serialPortSend = HAL_USART_Write,
     .serialPortClose = HAL_USART_Close
 };
@@ -26,3 +26,4 @@ NBbc95 bc95_cfg = {
 
 
 #endif
+
