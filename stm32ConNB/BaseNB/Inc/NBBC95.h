@@ -3,8 +3,8 @@
 
 
 #include <stdint.h>
-#include "usart.h"
-
+#include "stm32f1xx_hal.h"
+//#include "usart.h"
 
 
 typedef enum {
@@ -27,9 +27,6 @@ typedef struct{
 }ATcmd;
 
 typedef ATcmd* atcmdInfo;
-
-
-
 
 
 typedef enum {
@@ -112,10 +109,10 @@ typedef struct NBbc95{
 }NBbc95;
 
 //串口接收回调
-typedef void (*bc95_SP_receive_callback)(char*, uint16_t);
+typedef void (*BC95_SP_ReceiveCallback)(char*, uint16_t);
 
 
-typedef void (*SerialPortOpen)(bc95_SP_receive_callback, uint32_t);
+typedef void (*SerialPortOpen)(BC95_SP_ReceiveCallback, uint32_t);
 typedef void (*SerialPortSend)(uint8_t*, uint16_t);
 typedef void (*SerialPortClose)(void);
 //串口操作结构体，用作初始化BC95对象结构的serialfun
@@ -148,7 +145,7 @@ extern uint8_t closeUdp_bc95(NBModule bc95);
 extern uint8_t bc95Main(NBModule bc95);
 void InitATcmd(atcmdInfo cmdinfo, const char* cmd, char* param, cmd_type property);
 uint16_t formatATcmd(atcmdInfo cmdinfo);
-
+uint8_t NBbc95SendCMD_Usart(bc95object bc95, atcmdInfo cmdinfo);
 
 
 

@@ -47,8 +47,8 @@
 
 #include "dma_fun.h"
 //DMA串口初始化
-void HAL_DMA_UsartInit(bc95_SP_receive_callback rec_cb, uint32_t baud);
-static bc95_SP_receive_callback bc95_rec_cb = NULL;
+//void HAL_DMA_UsartInit(bc95_SP_receive_callback rec_cb, uint32_t baud);
+static BC95_SP_ReceiveCallback bc95_rec_cb = NULL;
 static uint8_t msgbuf[256];
 
 static void usart_dma_send(uint8_t *buf, uint16_t len);
@@ -258,7 +258,7 @@ PUTCHAR_PROTOTYPE
 
 
 //DMA串口初始化
-void HAL_DMA_UsartInit(bc95_SP_receive_callback rec_cb, uint32_t baud)
+void HAL_DMA_UsartInit(BC95_SP_ReceiveCallback rec_cb, uint32_t baud)
 {
     baud = baud;
     bc95_rec_cb = rec_cb;

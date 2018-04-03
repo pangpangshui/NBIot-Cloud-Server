@@ -546,6 +546,11 @@
               <FileType>1</FileType>
               <FilePath>..\Src\dma_fun.c</FilePath>
             </File>
+            <File>
+              <FileName>NBBC95_cfg.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Src\NBBC95_cfg.c</FilePath>
+            </File>
           </Files>
         </Group>
       </Groups>

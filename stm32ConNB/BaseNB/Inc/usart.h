@@ -64,7 +64,12 @@ void MX_USART1_UART_Init(void);
 void MX_USART2_UART_Init(void);
 
 /* USER CODE BEGIN Prototypes */
-//void HAL_DMA_UsartInit(bc95_SP_receive_callback rec_cb, uint32_t baud);
+
+//extern void (*BC95_SP_ReceiveCallback)(char*, uint16_t);
+
+
+//串口初始化
+void HAL_DMA_UsartInit(BC95_SP_ReceiveCallback rec_cb, uint32_t baud);
 
 
 //DMA串口写数据

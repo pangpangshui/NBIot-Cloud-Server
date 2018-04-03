@@ -23,6 +23,7 @@
 "basenb\nbbc95.o"
 "basenb\dma.o"
 "basenb\dma_fun.o"
+"basenb\nbbc95_cfg.o"
 --library_type=microlib --strict --scatter "BaseNB\BaseNB.sct"
 --summary_stderr --info summarysizes --map --xref --callgraph --symbols
 --info sizes --info totals --info unused --info veneers

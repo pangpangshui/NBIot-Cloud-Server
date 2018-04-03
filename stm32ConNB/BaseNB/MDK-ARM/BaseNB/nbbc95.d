@@ -1,7 +1,6 @@
 basenb\nbbc95.o: ..\Src\NBBC95.c
 basenb\nbbc95.o: ../Inc/NBBC95.h
 basenb\nbbc95.o: E:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
-basenb\nbbc95.o: ../Inc/usart.h
 basenb\nbbc95.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal.h
 basenb\nbbc95.o: ../Inc/stm32f1xx_hal_conf.h
 basenb\nbbc95.o: ../Inc/main.h
@@ -28,5 +27,4 @@ basenb\nbbc95.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_pwr.h
 basenb\nbbc95.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim.h
 basenb\nbbc95.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim_ex.h
 basenb\nbbc95.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_uart.h
-basenb\nbbc95.o: ../Inc/NBBC95.h
 basenb\nbbc95.o: E:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h

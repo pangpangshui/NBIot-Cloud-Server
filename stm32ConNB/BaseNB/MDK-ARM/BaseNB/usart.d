@@ -28,7 +28,6 @@ basenb\usart.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim.h
 basenb\usart.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim_ex.h
 basenb\usart.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_uart.h
 basenb\usart.o: ../Inc/NBBC95.h
-basenb\usart.o: ../Inc/usart.h
 basenb\usart.o: ../Inc/gpio.h
 basenb\usart.o: ../Inc/dma.h
 basenb\usart.o: ../Inc/dma_fun.h

@@ -70,7 +70,7 @@ typedef enum {
 }NB_State;
 
 volatile NB_State nb_state = NB_NONE;
-void MsgReportCallback(msg_type, int, char*);
+int NB_MsgreportCallback(msg_type, int, char*);
 
 /* USER CODE END PV */
 
@@ -288,7 +288,7 @@ static void MX_NVIC_Init(void)
 }
 
 /* USER CODE BEGIN 4 */
-void MsgReportCallback(msg_type mType, int len, char* msg)
+int NB_MsgreportCallback(msg_type mType, int len, char* msg)
 {
     printf("\r\nmsg:%s", msg);
     switch(mType) {
@@ -307,6 +307,7 @@ void MsgReportCallback(msg_type mType, int len, char* msg)
             break;
         default: break;
     }
+    return 0;
 }
 /* USER CODE END 4 */
 

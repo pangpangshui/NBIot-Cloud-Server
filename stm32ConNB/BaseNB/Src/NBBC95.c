@@ -42,7 +42,7 @@ struct CmdBufRec{
     uint16_t len;
 }NBCmdBufRec;
 
-uint8_t NBbc95SendCMD_Usart(bc95object bc95, atcmdInfo cmdinfo);
+
 
 
 extern NBOperaFun bc95_OperaFun;
@@ -194,7 +194,7 @@ uint8_t bc95Main(NBModule bc95)
     return bc95->funcPtr->BC95Main(bc95);
 }
 
-uint8_t NBbc95SendCMD(bc95object bc95, atcmdInfo cmdinfo) 
+uint8_t NBbc95SendCMD_Usart(bc95object bc95, atcmdInfo cmdinfo) 
 {
     bc95->SPfunTable->serialPortSend((uint8_t*)NBCmdBufSend.buf, NBCmdBufSend.len);
     return 0;
