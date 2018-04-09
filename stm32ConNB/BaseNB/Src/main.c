@@ -39,13 +39,13 @@
 #include "main.h"
 #include "stm32f1xx_hal.h"
 #include "dma.h"
-#include "tim.h"
 #include "usart.h"
 #include "gpio.h"
 
 /* USER CODE BEGIN Includes */
 #include "NBBC95.h"
 #include "NBBC95_cfg.h"
+#include "uartTimerPoll.h"
 /* USER CODE END Includes */
 
 /* Private variables ---------------------------------------------------------*/
@@ -94,77 +94,78 @@ static void MX_NVIC_Init(void);
   */
 int main(void)
 {
-    /* USER CODE BEGIN 1 */
+  /* USER CODE BEGIN 1 */
 
-    /* USER CODE END 1 */
+  /* USER CODE END 1 */
 
-    /* MCU Configuration----------------------------------------------------------*/
+  /* MCU Configuration----------------------------------------------------------*/
 
-    /* Reset of all peripherals, Initializes the Flash interface and the Systick. */
-    HAL_Init();
+  /* Reset of all peripherals, Initializes the Flash interface and the Systick. */
+  HAL_Init();
 
-    /* USER CODE BEGIN Init */
+  /* USER CODE BEGIN Init */
 
-    /* USER CODE END Init */
+  /* USER CODE END Init */
 
-    /* Configure the system clock */
-    SystemClock_Config();
+  /* Configure the system clock */
+  SystemClock_Config();
 
-    /* USER CODE BEGIN SysInit */
+  /* USER CODE BEGIN SysInit */
 
-    /* USER CODE END SysInit */
+  /* USER CODE END SysInit */
 
-    /* Initialize all configured peripherals */
-    MX_GPIO_Init();
-    MX_DMA_Init();
-    MX_TIM1_Init();
-    MX_USART1_UART_Init();
-    MX_USART2_UART_Init();
+  /* Initialize all configured peripherals */
+  MX_GPIO_Init();
+  MX_DMA_Init();
+  MX_USART1_UART_Init();
+  MX_USART2_UART_Init();
 
-    /* Initialize interrupts */
-    MX_NVIC_Init();
-    /* USER CODE BEGIN 2 */
-    openbc95(&bc95_cfg);
-    nb_state = NB_NONE;
-    /* USER CODE END 2 */
+  /* Initialize interrupts */
+  MX_NVIC_Init();
+  /* USER CODE BEGIN 2 */
+    openNBModule(&bc95_cfg);
+    nb_state = NB_Init;
+  /* USER CODE END 2 */
 
-    /* Infinite loop */
-    /* USER CODE BEGIN WHILE */
+  /* Infinite loop */
+  /* USER CODE BEGIN WHILE */
     printf("\n\r UART Printf Example to the UART\n\r");
 
     while (1)
     {
 
-        /* USER CODE END WHILE */
+  /* USER CODE END WHILE */
 
-        /* USER CODE BEGIN 3 */
+  /* USER CODE BEGIN 3 */
+        //printf("\n\r test\n\r");
         HAL_USART_Poll();
         bc95Main(&bc95_cfg);
-        //添加键盘事件和定时器事件
+        TimerPoll();
+        //添加键盘事件
         switch(nb_state) {
             case NB_NONE:
                 break;
             case NB_Init: {
                 printf("\r\n BC95 Module is initializing...");
-                initbc95(&bc95_cfg);
+                initNBModule(&bc95_cfg);
                 nb_state = NB_END;
                 break;
             }
             case NB_SIGN: {
-                printf("\r\n BC95 Module is initializing...");
-                initbc95(&bc95_cfg);
+                printf("\r\n BC95 Module sign state:");
+                SignNBModule(&bc95_cfg);
                 nb_state = NB_END;
                 break;
             }
             case NB_UDP_Create: {
                 printf("\r\n BC95 Module is initializing...");
-                initbc95(&bc95_cfg);
+                initNBModule(&bc95_cfg);
                 nb_state = NB_END;
                 break;
             }
             case NB_UDP_Send: {
                 printf("\r\n BC95 Module is initializing...");
-                initbc95(&bc95_cfg);
+                initNBModule(&bc95_cfg);
                 nb_state = NB_END;
                 break;
             }
@@ -206,7 +207,7 @@ int main(void)
             }
             case NB_Reset: {
                 printf("\r\n BC95 Module is initializing...");
-                initbc95(&bc95_cfg);
+                initNBModule(&bc95_cfg);
                 nb_state = NB_END;
                 break;
             }
@@ -214,7 +215,7 @@ int main(void)
                 break;
         }
     }
-    /* USER CODE END 3 */
+  /* USER CODE END 3 */
 
 }
 
@@ -276,9 +277,6 @@ static void MX_NVIC_Init(void)
   /* USART1_IRQn interrupt configuration */
   HAL_NVIC_SetPriority(USART1_IRQn, 0, 0);
   HAL_NVIC_EnableIRQ(USART1_IRQn);
-  /* USART2_IRQn interrupt configuration */
-  HAL_NVIC_SetPriority(USART2_IRQn, 0, 0);
-  HAL_NVIC_EnableIRQ(USART2_IRQn);
   /* DMA1_Channel5_IRQn interrupt configuration */
   HAL_NVIC_SetPriority(DMA1_Channel5_IRQn, 1, 0);
   HAL_NVIC_EnableIRQ(DMA1_Channel5_IRQn);
@@ -290,9 +288,15 @@ static void MX_NVIC_Init(void)
 /* USER CODE BEGIN 4 */
 int NB_MsgreportCallback(msg_type mType, int len, char* msg)
 {
-    printf("\r\nmsg:%s", msg);
+    //printf("\r\nmsg:%s", msg);
     switch(mType) {
+        case MSG_INIT:
+            printf("\r\nINIT:%s", msg);
+            if (*msg == 'S')
+                nb_state = NB_SIGN;
+            break;
         case MSG_IMSI:
+            
             break;
         case MSG_IMEI:
         case MSG_SIGN:

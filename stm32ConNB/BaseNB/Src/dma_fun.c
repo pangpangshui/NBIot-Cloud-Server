@@ -3,7 +3,7 @@
 #include "stm32f1xx_hal.h"
 
 
-#define DMA_NEW_RX_BYTE(IDX)    (0x00 == (dmaR_Conf.recBuf[(IDX)] >> 8))
+#define DMA_NEW_RX_BYTE(IDX)    (0x00 == ((dmaR_Conf.recBuf[(IDX)]) >> 8))
 #define DMA_GET_RX_BYTE(IDX)    (dmaR_Conf.recBuf[(IDX)] & 0xff)
 #define DMA_CLR_RX_BYTE(IDX)    (dmaR_Conf.recBuf[(IDX)] = 0xffff)
 #define HAL_USART_DMA_IDLE      (5)

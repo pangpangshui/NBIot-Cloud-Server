@@ -25,7 +25,6 @@ basenb\nbbc95_cfg.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_cortex.h
 basenb\nbbc95_cfg.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_flash.h
 basenb\nbbc95_cfg.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_flash_ex.h
 basenb\nbbc95_cfg.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_pwr.h
-basenb\nbbc95_cfg.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim.h
-basenb\nbbc95_cfg.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim_ex.h
 basenb\nbbc95_cfg.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_uart.h
 basenb\nbbc95_cfg.o: ../Inc/NBBC95.h
+basenb\nbbc95_cfg.o: ../Inc/uartTimerPoll.h

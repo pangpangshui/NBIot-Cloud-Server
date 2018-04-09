@@ -23,12 +23,10 @@ basenb\main.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_cortex.h
 basenb\main.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_flash.h
 basenb\main.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_flash_ex.h
 basenb\main.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_pwr.h
-basenb\main.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim.h
-basenb\main.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim_ex.h
 basenb\main.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_uart.h
 basenb\main.o: ../Inc/dma.h
-basenb\main.o: ../Inc/tim.h
 basenb\main.o: ../Inc/usart.h
 basenb\main.o: ../Inc/NBBC95.h
 basenb\main.o: ../Inc/gpio.h
 basenb\main.o: ../Inc/NBBC95_cfg.h
+basenb\main.o: ../Inc/uartTimerPoll.h
