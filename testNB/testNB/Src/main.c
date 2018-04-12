@@ -71,6 +71,8 @@ typedef enum {
 
 volatile NB_State nb_state = NB_NONE;
 int NB_MsgreportCallback(msg_type, int, char*);
+void readNBStateFromUart(void);
+uint8_t receBufferPC[1];
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -123,9 +125,10 @@ int main(void)
   MX_NVIC_Init();
   /* USER CODE BEGIN 2 */
     openNBModule(&bc95_cfg);
-    nb_state = NB_Init;
+    nb_state = NB_NONE;
+    HAL_UART_Receive_IT(&huart2, (uint8_t*)receBufferPC, 1);
   /* USER CODE END 2 */
-    printf("\n\r UART Printf Example to the UART\n\r");
+    
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
@@ -139,7 +142,8 @@ int main(void)
     //HAL_USART_Poll();
     bc95Main(&bc95_cfg);
     TimerPoll();
-        //添加键盘事件
+    
+    
     switch(nb_state) {
         case NB_NONE:
             break;
@@ -155,6 +159,12 @@ int main(void)
             nb_state = NB_END;
             break;
         }
+        case NB_Module: {
+            printf("\r\n BC95 Module info:");
+            getModuleInfoNBModule(&bc95_cfg);
+            nb_state = NB_END;
+            break;
+        }
         case NB_UDP_Create: {
             printf("\r\n BC95 Module Create UDP server");
             createUDPServerNBModule(&bc95_cfg);
@@ -163,7 +173,7 @@ int main(void)
         }
         case NB_UDP_Send: {
             printf("\r\n BC95 Module Send Messsage to UDP Server");
-            //sendToUdpNBModule(&bc95_cfg);
+            sendToUdpNBModule(&bc95_cfg, 10, "test\r\n");
             nb_state = NB_END;
             break;
         }
@@ -197,12 +207,7 @@ int main(void)
             nb_state = NB_END;
             break;
         }
-        case NB_Module: {
-            printf("\r\n BC95 Module info:");
-            getModuleInfoNBModule(&bc95_cfg);
-            nb_state = NB_END;
-            break;
-        }
+        
         case NB_Reset: {
             printf("\r\n BC95 Module is initializing...");
             initNBModule(&bc95_cfg);
@@ -276,6 +281,9 @@ static void MX_NVIC_Init(void)
   /* USART1_IRQn interrupt configuration */
   HAL_NVIC_SetPriority(USART1_IRQn, 0, 0);
   HAL_NVIC_EnableIRQ(USART1_IRQn);
+  /* USART2_IRQn interrupt configuration */
+  HAL_NVIC_SetPriority(USART2_IRQn, 0, 0);
+  HAL_NVIC_EnableIRQ(USART2_IRQn);
 }
 
 /* USER CODE BEGIN 4 */
@@ -284,9 +292,10 @@ int NB_MsgreportCallback(msg_type mType, int len, char* msg)
     //printf("\r\nmsg:%s", msg);
     switch(mType) {
         case MSG_INIT:
-            printf("\r\nINIT:%s", msg);
-            if (*msg == 'S')
-                nb_state = NB_Module;
+            printf("\r\nInit:%s", msg);
+            if (*msg == 'S') {
+                printf("\r\n初始化成功");
+            }
             break;
         case MSG_IMSI:
             
@@ -297,8 +306,23 @@ int NB_MsgreportCallback(msg_type mType, int len, char* msg)
         case MSG_MANUINFO:
         case MSG_REGISTER:
         case MSG_UDP_CREATE:
+            printf("\r\nUDP Create:%s", msg);
+            if (*msg == 'S'){
+                printf("\r\nUDP初始化成功");
+            }
+            break;
         case MSG_UDP_SEND:
+            printf("\r\nUDP Send:%s", msg);
+            if (*msg == 'S'){
+                printf("\r\nUDP发送数据成功");
+            }
+            break;
         case MSG_UDP_RECE:
+            printf("\r\nUDP Receive:%s", msg);
+            if (*msg == 'S'){
+                printf("\r\nUDP接收数据成功");
+            }
+            break;
         case MSG_UDP_CLOSE:
         case MSG_COAP:
             break;
@@ -306,6 +330,42 @@ int NB_MsgreportCallback(msg_type mType, int len, char* msg)
     }
     return 0;
 }
+
+
+
+void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
+{
+    UNUSED(huart);
+    //printf("recevied");
+    //HAL_UART_Transmit_IT(&huart2, (uint8_t *)receBufferPC, 1);
+    //HAL_Delay(10);
+    readNBStateFromUart();
+//    for (int i = 0; i< 20; i++)
+//        receBufferPC[i] = 0x00;
+    //HAL_Delay(10);
+    receBufferPC[0] = 0x00;
+    HAL_UART_Receive_IT(&huart2, (uint8_t*)receBufferPC, 1);
+}
+
+
+void readNBStateFromUart(void)
+{
+    if (receBufferPC[0] == '1')
+        nb_state = NB_Init;
+    else if (receBufferPC[0] == '2')
+        nb_state = NB_SIGN;
+    else if (receBufferPC[0] == '3')
+        nb_state = NB_Module;
+    else if (receBufferPC[0] == '4')
+        nb_state = NB_UDP_Create;
+    else if (receBufferPC[0] == '5')
+        nb_state = NB_UDP_Send;
+    else if (receBufferPC[0] == '6')
+        nb_state = NB_UDP_Read;
+    else if (receBufferPC[0] == '7')
+        nb_state = NB_UDP_Close;
+}
+
 /* USER CODE END 4 */
 
 /**

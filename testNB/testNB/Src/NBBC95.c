@@ -26,11 +26,11 @@ const char* AT_NSMI     =   "AT+NSMI";
 const char* AT_NNMI     =   "AT+NNMI";
 const char* AT_NSOCL    =   "AT+NSOCL";
 const char* AT_NSOCR    =   "AT+NSOCR";
-const char* AT_NSOST    =   "AT_NSOST";
+const char* AT_NSOST    =   "AT+NSOST";
 
 //NB模块操作
 typedef enum {
-    ACTION_NONE,
+    ACTION_NONE,        //0
     ACTION_SYNC,//AT
     ACTION_CMEE,
     ACTION_CFUN,
@@ -49,10 +49,10 @@ typedef enum {
     ACTION_CSQ,
     ACTION_CEREG,
     ACTION_NUESTATS,
-    ACTION_UDP_CREATE,
-    ACTION_UDP_CLOSE,
-    ACTION_UDP_SEND,
-    ACTION_UDP_RESET,
+    ACTION_UDP_CREATE,  //19
+    ACTION_UDP_CLOSE,   //20
+    ACTION_UDP_SEND = 23,    //21
+    ACTION_UDP_RESET,   //22
     ACTION_END
 }NBAction;
 
@@ -110,9 +110,9 @@ const NBOperaFun bc95fun = {
 #define BAND_700MHZ_ID      28
 #define BAND_700MHZ_STR     "700"
 
-#define LOCAL_UDP_SET       "DGRAM,17,10000,1"
+#define LOCAL_UDP_SET       "DGRAM,17,12777,0"
 #define REMOTE_SERVER_IP    "193.112.57.70"
-#define REMOTE_SERVER_PORT  "54333"
+#define REMOTE_SERVER_PORT  "17777"
 
 
 struct CmdBufSend{
@@ -260,7 +260,7 @@ uint8_t bc95_AsynNotification(char* buf, uint16_t* len)
 }
 
 
-//处理串口返回的数据
+//处理串口返回的数据, 重要, 是uart(bc95串口)接收下行数据的接口
 static void bc95_SerialReceCallBack(char* buf, uint16_t len)
 {
     if (len == 0)
@@ -711,8 +711,9 @@ void NBSendMsg(NBModule bc95, char **buf, unsigned char isOK)
             case ACTION_UDP_CREATE:
             {
                 memcpy(bc95_status.UDP_ID, buf[0], 2);
-                if (nb_state.sub_state == 1) 
+                if (nb_state.sub_state == 1) {
                     bc95->recMsg_Callback((msg_type)PROCESS_UDP_CREATE, 1, "S");
+                }
             }
             break;
             case ACTION_UDP_CLOSE:
@@ -727,7 +728,7 @@ void NBSendMsg(NBModule bc95, char **buf, unsigned char isOK)
             case PROCESS_UDP_CLOSE:
             {
                 bc95_status.UDP_ID[0] = 0;
-                bc95_status.UDP_ID[1] = 1;
+                bc95_status.UDP_ID[1] = 0;
             }
             break;
             case ACTION_END:
@@ -981,7 +982,7 @@ uint8_t bc95Main(NBModule bc95)
             bc95_event_reg ^= NB_UDP_RECE_EVENT;
     }
     if (bc95_event_reg & NB_COAP_RECE_EVENT) {
-        if (recFromUdp_bc95(bc95) == 1)
+        if (recFromUdp_bc95(bc95) == 1) //需要修改
             bc95_event_reg ^= NB_COAP_RECE_EVENT;
     }
     if (bc95_event_reg & NB_REG_STA_EVENT) {
