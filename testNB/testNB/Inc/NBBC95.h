@@ -38,19 +38,25 @@ typedef enum {
     MSG_NONE,
     MSG_INIT,
     MSG_IMSI,
-    MSG_IMEI,
+    MSG_MODULEINFO,//模块信息
+    MSG_DEVID,//制造商ID
+    MSG_MANUINFO,//厂商型号
+    MSG_MREVER,//厂家版本号
+    MSG_BAND,//工作频段
+    MSG_IMEI,//身份码
+    
     MSG_SIGN,
-    MSG_DEVID,
-    MSG_MANUINFO,
-    MSG_MODULEINFO,
-    MSG_MREVER,
-    MSG_BAND,
     MSG_REGISTER,
+    
     MSG_UDP_CREATE,
+    MSG_UDP_CLOSE,
     MSG_UDP_SEND,
     MSG_UDP_RECE,
-    MSG_UDP_CLOSE,
-    MSG_COAP
+    
+    MSG_COAP,
+    MSG_COAP_SEND,
+    MSG_COAP_RECE,
+    MSG_END
 }msg_type;
 
 
@@ -59,24 +65,28 @@ typedef enum {
     PROCESS_NONE,
     PROCESS_INIT = MSG_INIT,
     PROCESS_MODULE_INFO = MSG_MODULEINFO,
+    PROCESS_SIGN = MSG_SIGN,
     PROCESS_REGISTER = MSG_REGISTER,
 //    PROCESS_IMSI = MSG_IMSI,
 //    PROCESS_IMEI = MSG_IMEI,
-    PROCESS_SIGN = MSG_SIGN,
+    
     PROCESS_UDP_CREATE = MSG_UDP_CREATE,
+    PROCESS_UDP_CLOSE = MSG_UDP_CLOSE,
     PROCESS_UDP_SEND = MSG_UDP_SEND,
     PROCESS_UDP_RECE = MSG_UDP_RECE,
-    PROCESS_UDP_CLOSE = MSG_UDP_CLOSE,
-    PROCESS_COAP = MSG_COAP
+    
+    PROCESS_COAP = MSG_COAP,
+    PROCESS_COAP_SEND = MSG_COAP_SEND,
+    PROCESS_COAP_RECE = MSG_COAP_RECE
 }NB_Process;
 
 
 typedef enum {
     TYPES_CIMI      =   MSG_IMSI,
     TYPES_CGSN      =   MSG_IMEI,
-    TYPES_CGMI      =   MSG_MANUINFO,
-    TYPES_CGMM      =   MSG_MODULEINFO,
-    TYPES_CGMR      =   MSG_MREVER,
+    TYPES_CGMI      =   MSG_DEVID,//制造商ID
+    TYPES_CGMM      =   MSG_MANUINFO,//厂商型号
+    TYPES_CGMR      =   MSG_MREVER,//厂家版本号
     TYPES_NBAND     =   MSG_BAND,
     TYPES_UDP_CREATE=   MSG_UDP_CREATE,
     TYPES_UDP_CLOSE =   MSG_UDP_CLOSE,
@@ -104,20 +114,34 @@ typedef uint8_t (*NB_CreateUdpServer)(NBModule);
 typedef uint8_t (*NB_SendToUdp)(NBModule, int , char*);
 //typedef uint8_t (*NB_RecFromUdp)(NBModule);
 typedef uint8_t (*NB_CloseUdp)(NBModule);
+//coap 信息
+typedef uint8_t (*NB_CoapServer)(NBModule, unsigned char, char*);
+//coap发送提示方式设置
+typedef uint8_t (*NB_CoapSentIndication)(NBModule, int);
+//coap接收方式设置
+typedef uint8_t (*NB_CoapReceIndication)(NBModule, int);
+//coap协议信息发送
+typedef uint8_t (*NB_CoapSentMsg)(NBModule, int, char*);
+//模块复位
+//typedef uint8_t (*NB_Reset)(NBModule);
 typedef uint8_t (*NB_BC95Main)(NBModule);
 
 typedef struct {
-    NB_OpenModule       Openbc95;
-    NB_initbc95         Initbc95;
-    NB_ModuleInfo       getModuleInfo;
-    NB_RegisterInfo     getRegisterInfo;
-    NB_MISIInfo         getMISIInfo;
-    NB_NetSign          isNetSign;
-    NB_CreateUdpServer  CreateUDPServer;
-    NB_SendToUdp        SendToUdp;
-    //NB_RecFromUdp       RecFromUdp;
-    NB_CloseUdp         CloseUdp;
-    NB_BC95Main         BC95Main;
+    NB_OpenModule           Openbc95;
+    NB_initbc95             Initbc95;
+    NB_ModuleInfo           getModuleInfo;
+    NB_RegisterInfo         getRegisterInfo;
+    NB_MISIInfo             getMISIInfo;
+    NB_NetSign              isNetSign;
+    NB_CreateUdpServer      CreateUDPServer;
+    NB_SendToUdp            SendToUdp;
+    //NB_RecFromUdp         RecFromUdp;
+    NB_CloseUdp             CloseUdp;
+    NB_CoapServer           CoapServer;
+    NB_CoapSentIndication   CoapSentIndication;
+    NB_CoapReceIndication   CoapReceIndication;
+    NB_CoapSentMsg          CoapSentMsg;
+    NB_BC95Main             BC95Main;
 }NBOperaFun;
 
 
@@ -174,8 +198,13 @@ extern const char* getMISIInfo_bc95(NBModule bc95);
 extern int isNetSign_bc95(NBModule bc95);
 extern uint8_t createUDPServer_bc95(NBModule bc95);
 extern uint8_t sendToUdp_bc95(NBModule bc95, int len, char* msg);
-uint8_t recFromUdp_bc95(NBModule bc95);
 extern uint8_t closeUdp_bc95(NBModule bc95);
+uint8_t recFromUdp_bc95(NBModule bc95);
+extern uint8_t coapServer_bc95(NBModule bc95, unsigned char isSet, char* coap);
+extern uint8_t coapSentIndication_bc95(NBModule bc95, int code);
+extern uint8_t coapReceIndication_bc95(NBModule bc95, int code);
+extern uint8_t coapSentMsg_bc95(NBModule bc95, int len, char* msg);
+uint8_t recFromCoap_bc95(NBModule bc95);
 extern uint8_t bc95Main(NBModule bc95);
 void InitATcmd(atcmdInfo cmdinfo, const char* cmd, char* param, cmd_type property);
 uint16_t formatATcmd(atcmdInfo cmdinfo);
@@ -190,6 +219,10 @@ extern int getModuleInfoNBModule(NBModule bc95);
 extern uint8_t createUDPServerNBModule(NBModule bc95);
 extern uint8_t closeUdpNBModule(NBModule bc95);
 extern uint8_t sendToUdpNBModule(NBModule bc95, int len, char* buf);
+extern uint8_t coapServerNBModule(NBModule bc95, unsigned char isSet, char* coap);
+extern uint8_t coapSentIndicationNBModule(NBModule bc95, int code);
+extern uint8_t coapReceIndicationNBModule(NBModule bc95, int code);
+extern uint8_t coapSentMsgNBModule(NBModule bc95, int len, char* msg);
 extern uint8_t NBModuleMain(NBModule bc95);
 
 

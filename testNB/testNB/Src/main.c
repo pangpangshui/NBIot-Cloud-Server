@@ -69,6 +69,17 @@ typedef enum {
     NB_END
 }NB_State;
 
+
+uint8_t* NB_MODULE_IMEI = NULL;
+
+//记录NB模块流程
+uint8_t processRecord = 0;
+
+#define NB_PROCESS_INIT             0X01
+#define NB_PROCESS_UDP_CREATE       0x02
+#define NB_PROCESS_UDP_REG          0x04
+#define NB_PROCESS_COAP_SERVER      0x08
+
 volatile NB_State nb_state = NB_NONE;
 int NB_MsgreportCallback(msg_type, int, char*);
 void readNBStateFromUart(void);
@@ -128,7 +139,7 @@ int main(void)
     nb_state = NB_NONE;
     HAL_UART_Receive_IT(&huart2, (uint8_t*)receBufferPC, 1);
   /* USER CODE END 2 */
-    
+
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
@@ -139,7 +150,7 @@ int main(void)
   /* USER CODE BEGIN 3 */
       //HAL_UART_Transmit_DMA(&huart1, (uint8_t*)"test", 4);
       //HAL_USART_Write((uint8_t*)"AT\r\n", 4);
-    //HAL_USART_Poll();
+    HAL_USART_Poll();
     bc95Main(&bc95_cfg);
     TimerPoll();
     
@@ -149,6 +160,7 @@ int main(void)
             break;
         case NB_Init: {
             printf("\r\n BC95 Module is initializing...");
+            processRecord = 0;
             initNBModule(&bc95_cfg);
             nb_state = NB_END;
             break;
@@ -173,6 +185,7 @@ int main(void)
         }
         case NB_UDP_Send: {
             printf("\r\n BC95 Module Send Messsage to UDP Server");
+            //char* userPacket = "test\r\n";
             sendToUdpNBModule(&bc95_cfg, 10, "test\r\n");
             nb_state = NB_END;
             break;
@@ -190,8 +203,8 @@ int main(void)
             break;
         }
         case NB_Coap_Server: {
-            printf("\r\n BC95 Module is initializing...");
-            initbc95(&bc95_cfg);
+            printf("\r\n BC95 Module is Creating Coap server...");
+            coapServerNBModule(&bc95_cfg, 1, NULL);
             nb_state = NB_END;
             break;
         }
@@ -202,8 +215,8 @@ int main(void)
             break;
         }
         case NB_Coap_Send: {
-            printf("\r\n BC95 Module is initializing...");
-            initbc95(&bc95_cfg);
+            printf("\r\n BC95 Module is Sending msg using Coap Server...");
+            coapSentMsgNBModule(&bc95_cfg, sizeof("testCoap"), "testCoap");
             nb_state = NB_END;
             break;
         }
@@ -282,7 +295,7 @@ static void MX_NVIC_Init(void)
   HAL_NVIC_SetPriority(USART1_IRQn, 0, 0);
   HAL_NVIC_EnableIRQ(USART1_IRQn);
   /* USART2_IRQn interrupt configuration */
-  HAL_NVIC_SetPriority(USART2_IRQn, 0, 0);
+  HAL_NVIC_SetPriority(USART2_IRQn, 2, 0);
   HAL_NVIC_EnableIRQ(USART2_IRQn);
 }
 
@@ -295,26 +308,42 @@ int NB_MsgreportCallback(msg_type mType, int len, char* msg)
             printf("\r\nInit:%s", msg);
             if (*msg == 'S') {
                 printf("\r\n初始化成功");
+                processRecord |= NB_PROCESS_INIT;
+                nb_state = NB_UDP_Create;
             }
             break;
         case MSG_IMSI:
-            
+            printf("\r\nIMSI:%s", msg);
             break;
         case MSG_IMEI:
+            printf("\r\nIMEI:%s", msg);
+            NB_MODULE_IMEI = (uint8_t*)msg;
+            break;
         case MSG_SIGN:
+            printf("\r\nSIGN:%s", msg);
+            break;
         case MSG_DEVID:
+            printf("\r\nDEVID:%s", msg);
+            break;
         case MSG_MANUINFO:
+            printf("\r\nMANUINFO:%s", msg);
+            break;
         case MSG_REGISTER:
+            printf("\r\nREGISTER:%s", msg);
+            break;
         case MSG_UDP_CREATE:
             printf("\r\nUDP Create:%s", msg);
             if (*msg == 'S'){
                 printf("\r\nUDP初始化成功");
+                processRecord |= NB_PROCESS_UDP_CREATE;
+                nb_state = NB_UDP_Send;
             }
             break;
         case MSG_UDP_SEND:
             printf("\r\nUDP Send:%s", msg);
             if (*msg == 'S'){
                 printf("\r\nUDP发送数据成功");
+                //如果需要接收数据则继续调用接受函数recFromUdp_bc95，发送接受指令
             }
             break;
         case MSG_UDP_RECE:
@@ -324,9 +353,28 @@ int NB_MsgreportCallback(msg_type mType, int len, char* msg)
             }
             break;
         case MSG_UDP_CLOSE:
-        case MSG_COAP:
+            printf("\r\nUDP Close:%s", msg);
+            if (*msg == 'S'){
+                printf("\r\nUDP关闭");
+                processRecord &= ~NB_PROCESS_UDP_CREATE;
+            }
             break;
-        default: break;
+        case MSG_COAP:
+            printf("\r\nCoap Create:%s", msg);
+            if (*msg == 'S'){
+                printf("\r\nUDP初始化成功");
+                processRecord |= NB_PROCESS_COAP_SERVER;
+            }
+            break;
+        case MSG_COAP_SEND:
+            printf("\r\nCoap Send:%s", msg);
+            if (*msg == 'S'){
+                printf("\r\nCoap发送数据成功");
+                //如果需要接收数据则继续调用接受函数recFromCoap_bc95，发送接受指令
+            }
+            break;
+        default: 
+            break;
     }
     return 0;
 }
@@ -339,31 +387,52 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
     //printf("recevied");
     //HAL_UART_Transmit_IT(&huart2, (uint8_t *)receBufferPC, 1);
     //HAL_Delay(10);
-    readNBStateFromUart();
-//    for (int i = 0; i< 20; i++)
-//        receBufferPC[i] = 0x00;
-    //HAL_Delay(10);
-    receBufferPC[0] = 0x00;
-    HAL_UART_Receive_IT(&huart2, (uint8_t*)receBufferPC, 1);
+    if (huart == &huart2) {
+        readNBStateFromUart();
+        receBufferPC[0] = 0x00;
+        HAL_UART_Receive_IT(&huart2, (uint8_t*)receBufferPC, 1);
+        
+    }
 }
 
 
 void readNBStateFromUart(void)
 {
-    if (receBufferPC[0] == '1')
+    if (receBufferPC[0] == '1') {
         nb_state = NB_Init;
-    else if (receBufferPC[0] == '2')
-        nb_state = NB_SIGN;
-    else if (receBufferPC[0] == '3')
-        nb_state = NB_Module;
-    else if (receBufferPC[0] == '4')
-        nb_state = NB_UDP_Create;
-    else if (receBufferPC[0] == '5')
-        nb_state = NB_UDP_Send;
+    }
+    else if (receBufferPC[0] == '2') {
+        if (processRecord & NB_PROCESS_INIT)
+            nb_state = NB_SIGN;
+    }
+        
+    else if (receBufferPC[0] == '3') {
+        if (processRecord & NB_PROCESS_INIT)
+            nb_state = NB_Module;
+    }
+    else if (receBufferPC[0] == '4') {
+        if (processRecord & NB_PROCESS_INIT)
+            nb_state = NB_UDP_Create;
+    }
+    else if (receBufferPC[0] == '5') {
+        if (processRecord & NB_PROCESS_INIT) {
+            if (processRecord & NB_PROCESS_UDP_CREATE)
+                nb_state = NB_UDP_Send;
+        }
+    }
     else if (receBufferPC[0] == '6')
         nb_state = NB_UDP_Read;
     else if (receBufferPC[0] == '7')
         nb_state = NB_UDP_Close;
+    else if (receBufferPC[0] == '8') {
+        if (processRecord & NB_PROCESS_INIT)
+            if (!(processRecord & NB_Coap_Server))
+            nb_state = NB_Coap_Server;
+    }
+    else if (receBufferPC[0] == '9') {
+        if (processRecord & NB_Coap_Server)
+            nb_state = NB_Coap_Send;
+    }
 }
 
 /* USER CODE END 4 */

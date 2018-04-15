@@ -45,6 +45,8 @@
 
 /* USER CODE BEGIN 0 */
 #include "dma_fun.h"
+#include <string.h>
+
 //DMA串口初始化
 //void HAL_DMA_UsartInit(bc95_SP_receive_callback rec_cb, uint32_t baud);
 static BC95_SP_ReceiveCallback bc95_rec_cb = NULL;
@@ -249,7 +251,7 @@ void HAL_UART_MspDeInit(UART_HandleTypeDef* uartHandle)
 PUTCHAR_PROTOTYPE
 {
     //发送一个字符，ch为字符存储地址
-	HAL_UART_Transmit(&huart2, (uint8_t*)&ch, 1, 0xFFFF);
+	HAL_UART_Transmit(&huart2, (uint8_t*)&ch, 1, 0xffff);
 	return ch;
 }
 
@@ -267,16 +269,18 @@ void HAL_DMA_UsartInit(BC95_SP_ReceiveCallback rec_cb, uint32_t baud)
 void HAL_USART_Write(uint8_t *buf, uint16_t len)
 {
     //buf[len] = 0;
-    printf("\r\n->:%s", buf);//uart2? 输出调试信息? 
+    printf("\r\n->:%s", buf);//uart2, 输出调试信息
     usartDMA_Write(buf, len);
+    HAL_Delay(100);
     usart_dma_send(buf, len);
+    //buf[len] = 0;
 }
 
 static void usart_dma_send(uint8_t *buf, uint16_t len)
 {
     HAL_UART_Transmit_DMA(&huart1, buf, len);
-    HAL_Delay(50);
-    HAL_USART_Poll();
+    //HAL_Delay(200);
+    //HAL_USART_Poll();
 }
 
 //DMA串口读数据
@@ -297,8 +301,11 @@ uint8_t HAL_USART_Poll(void)
             len = usartDMA_Read(msgbuf, len);
             //msgbuf[len] = 0;
             printf("%s", msgbuf);
-            if (bc95_rec_cb)
+            if (bc95_rec_cb) {
                 bc95_rec_cb((char*)msgbuf, len);
+                memset(msgbuf, 0, len);
+            }
+                
         }
     }
     return evt;

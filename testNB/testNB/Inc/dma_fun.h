@@ -18,7 +18,7 @@ typedef struct DMA_Rece_Config {
     uint16_t recBuf[RECE_BUF_MAX_SIZE]; //缓冲区大小
     uint16_t rxHead;                    //有效数据头部
     uint16_t rxEnd;                     //最后一次数据末尾
-    uint8_t  rxTimeoutTick;             //超时时间,ms
+    uint16_t  rxTimeoutTick;             //超时时间,ms
     uint32_t rxTimeoutCount;            //超时计数开始数值
     
     uint8_t  sendBuf[2][SEND_BUF_MAX_SIZE];//发送缓冲区

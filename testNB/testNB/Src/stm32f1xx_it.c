@@ -36,7 +36,8 @@
 #include "stm32f1xx_it.h"
 
 /* USER CODE BEGIN 0 */
-
+extern uint8_t receBufferPC[1];
+extern void readNBStateFromUart(void);
 /* USER CODE END 0 */
 
 /* External variables --------------------------------------------------------*/
@@ -247,7 +248,12 @@ void USART2_IRQHandler(void)
   /* USER CODE END USART2_IRQn 0 */
   HAL_UART_IRQHandler(&huart2);
   /* USER CODE BEGIN USART2_IRQn 1 */
-
+    if (__HAL_UART_GET_FLAG(&huart2, UART_FLAG_RXNE)) {
+//        readNBStateFromUart();
+//        //receBufferPC[0] = 0x00;
+//        HAL_UART_Receive_IT(&huart2, (uint8_t*)receBufferPC, 1);
+    }
+    
   /* USER CODE END USART2_IRQn 1 */
 }
 

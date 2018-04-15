@@ -29,3 +29,4 @@ testnb\usart.o: ../Inc/NBBC95.h
 testnb\usart.o: ../Inc/gpio.h
 testnb\usart.o: ../Inc/dma.h
 testnb\usart.o: ../Inc/dma_fun.h
+testnb\usart.o: E:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
