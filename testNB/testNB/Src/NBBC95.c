@@ -679,6 +679,7 @@ uint8_t recFromCoap_bc95(NBModule bc95)
     if (nb_state.state != PROCESS_NONE)
         return 0;
 
+    //主动查询方式
     InitATcmd(&atcmd, AT_NMGR, NULL, CMD_EXCUTE);
     
     nb_state.state = PROCESS_COAP_RECE;
@@ -1017,11 +1018,11 @@ static unsigned char GotoNextCmd(void)
                 atcmd.repeatPeri = 1;
                 atcmd.expectReply = "CGATT:1";
                 break;
-            //coap
+            //coap 
             case ACTION_NSMI:
                 InitATcmd(&atcmd, AT_NSMI, "1", CMD_SET);
                 break;
-            //coap
+            //coap 被动异步通知, 接受下行数据
             case ACTION_NNMI:
                 InitATcmd(&atcmd, AT_NNMI, "2", CMD_SET);
                 break;

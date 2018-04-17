@@ -8,7 +8,7 @@ var ejs = require('ejs');
 var index = require('./routes/index');
 var users = require('./routes/users');
 var test = require('./routes/test');
-var coap = require('./routes/Iot/coap_server')
+var coap = require('./routes/Iot/CoAPServer')
 //var userInfo = require('./routes/userInfo');
 var cors = require('cors');
 

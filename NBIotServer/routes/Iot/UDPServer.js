@@ -14,9 +14,9 @@ serverSocket.on('error', (err) => {
 })
 
 serverSocket.on('listening', () => {
-    console.log("echo server is listening on port 7")
+    console.log("echo server is listening on port 18777")
 })
 
 
-serverSocket.bind(7);
+serverSocket.bind(187777);
 
