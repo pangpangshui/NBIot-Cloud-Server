@@ -37,7 +37,7 @@
 </template>
 
 <script>
-  import {bus} from './../API/bus'
+  import bus from './../API/bus'
   export default {
     name: "nb-manage-header",
     data() {

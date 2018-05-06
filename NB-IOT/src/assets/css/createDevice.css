@@ -1,6 +1,6 @@
 .createdevices {
   width: 1220px;
-  height: 600px;
+  height: 800px;
   margin: 20px auto;
   background: #fff;
   box-shadow: 0 0 12px #5269c2;
@@ -31,8 +31,9 @@
 
 
 .map {
-  width: 100%;
-  height: 300px;
+  width: 98%;
+  height: 430px;
+  margin-left: 10px;
 }
 
 
@@ -42,9 +43,10 @@
 
 .complebtn {
   /*margin-left: 20px;*/
-  margin-right: 20px;
+  margin-right: 0px;
+  margin-left: 50px;
+  margin-top: 30px;
 }
-
 
 .navbar {
   margin-top: 20px;
@@ -58,7 +60,7 @@
 
 
 .container {
-  height: 800px;
+  height: 1000px;
   width: 1400px;
   border: 1px solid #eee;
 }
@@ -66,3 +68,4 @@
 .maincontent {
   overflow: auto;
 }
+

@@ -6,7 +6,8 @@ import router from './router'
 import ElementUI from 'element-ui'
 import BaiduMap from 'vue-baidu-map'
 import 'element-ui/lib/theme-chalk/index.css'
-
+import Socketio from 'vue-socket.io';
+//Vue.use(Socketio, 'http://127.0.0.1:3001'); //声明时已连接上socketio
 
 
 Vue.config.productionTip = false
@@ -18,6 +19,7 @@ Vue.use(BaiduMap, {
   ak: '24a5oMfyb1tGIqdymB1eBNDifc0C0FkA'
 })
 //Vue.use(Select)
+//var socket = io();
 /* eslint-disable no-new */
 new Vue({
   el: '#app',

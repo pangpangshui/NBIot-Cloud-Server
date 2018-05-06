@@ -8,14 +8,20 @@ var ejs = require('ejs');
 var index = require('./routes/index');
 var users = require('./routes/users');
 var test = require('./routes/test');
-var coap = require('./routes/Iot/CoAPServer')
-//var userInfo = require('./routes/userInfo');
+var coap_routes = require('./routes/Iot/CoAPServer');
+var coap = require('coap');
+var SocketIO = require('./routes/SocketIO');
+var deviceHistory = require('./routes/deviceHistory');
+var udpServer = require('./routes/Iot/UDPServer');
+var deviceList = require('./routes/deviceList');
 var cors = require('cors');
 
 
 var app = express();
 
-
+var udp_port = 18777;
+var coap_port = 5683;
+var host = '0.0.0.0';
 
 //app.use(cors({origin:'http://127.0.0.1:3000/coap'}));
 
@@ -47,8 +53,15 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', index);
 app.use('/users', users);
 app.use('/test', test);
-app.use('/coap', coap);
-//app.use('/userInfo', userInfo);
+//app.use('/devices', coap_routes);
+app.use('/SocketIO', SocketIO);
+app.use('/deviceHistory',deviceHistory);
+app.use('/udpServer',udpServer);
+app.use('/deviceList',deviceList);
+
+// 启动coap服务器
+coap.createServer(coap_routes).listen(coap_port);
+console.log('CoAP Server Listening on :' + host + ':' + coap_port);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

@@ -33,7 +33,7 @@ router.post("/login",  (req, res, next) => {
     var param = {
         userName: req.body.userName,
         userPwd: req.body.userPwd
-    }
+    };
     userInfo.findOne(param, (err, doc) => {
         if (err) {
             msg: err.message
@@ -72,7 +72,7 @@ router.post("/register",  (req, res, next) => {
         userName: req.body.userName,
         userPwd: req.body.userPwd,
         //userId:
-    }
+    };
 
     ids.findAndModify({}, [], { $inc: { amount: 1 } }, {new:true}, (err, result) => {
         if (err) {

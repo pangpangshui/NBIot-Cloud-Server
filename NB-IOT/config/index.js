@@ -12,18 +12,38 @@ module.exports = {
     assetsPublicPath: '/',
     proxyTable: {
       '/users/*': {
-        target: 'http://193.112.57.70:3000',
+        //target: 'http://193.112.57.70:3000',
+        target: 'http://localhost:3000',
+        changeOrigin: true
+      },
+      '/deviceHistory': {
+        //target: 'http://193.112.57.70:3000',
+        target: 'http://localhost:3000',
+        changeOrigin: true
+      },
+      '/udpServer': {
+        //target: 'http://193.112.57.70:3000',
+        target: 'http://localhost:3000',
+        changeOrigin: true
+      },
+      '/deviceList': {
+        //target: 'http://193.112.57.70:3000',
+        target: 'http://localhost:3000',
         changeOrigin: true
       },
       '/coap': {
-        target: 'http://193.112.57.70:3000',
+        target: 'http://localhost:3000',
+        changeOrigin: true
+      },
+      '/news': {
+        target: 'http://localhost:3000',
         changeOrigin: true
       }
     },
 
     // Various Dev Server settings
     host: 'localhost', // can be overwritten by process.env.HOST
-    port: 8080, // can be overwritten by process.env.PORT, if port is in use, a free one will be determined
+    port: 8081, // can be overwritten by process.env.PORT, if port is in use, a free one will be determined
     autoOpenBrowser: false,
     errorOverlay: true,
     notifyOnErrors: true,

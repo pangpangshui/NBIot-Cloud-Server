@@ -6,7 +6,9 @@ import Register from './../views/register'
 import BackmangementHome from './../views/backManagement'
 import Coap from './../views/coap'
 import DeviceList from './../views/deviceList'
+import DebugDevice from './../views/debugDevice'
 import CreateDevice from './../views/createDevice'
+import DeviceHistory from './../views/deviceHistory'
 import MainControl from './../views/mainControl'
 import ModifyUserInfo from './../views/modifyUserInfo'
 import MyProject from './../views/myProject'
@@ -55,6 +57,8 @@ export default new Router({
       children:[
         { path: '/deviceList', name: '设备列表', component: DeviceList, menuShow: true },
         { path: '/createDevice', name: '创建设备', component: CreateDevice, menuShow: true },
+        { path: '/deviceHistory', name: '历史信息', component: DeviceHistory, menuShow: true },
+        { path: '/debugDevice', name: '数据传输', component: DebugDevice, menuShow: false },
       ]
     },
     {
@@ -80,6 +84,11 @@ export default new Router({
         { path: '/modifyUserInfo', name: '修改信息', component: ModifyUserInfo, menuShow: true }
       ]
     },
+    // {
+    //   path: '/debugDevice',
+    //   name: 'DebugDevice',
+    //   component: DebugDevice
+    // },
     {
       path: '/coap',
       name: 'Coap',

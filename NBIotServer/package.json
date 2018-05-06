@@ -12,6 +12,7 @@
     "coap": "^0.21.0",
     "coap-node": "^0.2.8",
     "coap-packet": "^0.1.14",
+    "coap-router": "^1.0.0",
     "coap-shepherd": "^0.2.9",
     "cookie-parser": "~1.4.3",
     "cors": "^2.8.4",
@@ -31,6 +32,7 @@
     "proxytable": "^1.0.1",
     "raw-body": "^2.3.2",
     "readable-stream": "^2.3.4",
-    "serve-favicon": "~2.4.5"
+    "serve-favicon": "~2.4.5",
+    "socket.io": "^2.1.0"
   }
 }
