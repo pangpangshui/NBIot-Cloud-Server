@@ -14,6 +14,8 @@ var SocketIO = require('./routes/SocketIO');
 var deviceHistory = require('./routes/deviceHistory');
 var udpServer = require('./routes/Iot/UDPServer');
 var deviceList = require('./routes/deviceList');
+var createDevice = require('./routes/createDevice');
+var debugDevice = require('./routes/debugDevice');
 var cors = require('cors');
 
 
@@ -58,6 +60,8 @@ app.use('/SocketIO', SocketIO);
 app.use('/deviceHistory',deviceHistory);
 app.use('/udpServer',udpServer);
 app.use('/deviceList',deviceList);
+app.use('/createDevice',createDevice);
+app.use('/debugDevice',debugDevice);
 
 // 启动coap服务器
 coap.createServer(coap_routes).listen(coap_port);

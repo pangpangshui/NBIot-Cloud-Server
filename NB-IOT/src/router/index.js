@@ -58,7 +58,7 @@ export default new Router({
         { path: '/deviceList', name: '设备列表', component: DeviceList, menuShow: true },
         { path: '/createDevice', name: '创建设备', component: CreateDevice, menuShow: true },
         { path: '/deviceHistory', name: '历史信息', component: DeviceHistory, menuShow: true },
-        { path: '/debugDevice', name: '数据传输', component: DebugDevice, menuShow: false },
+        { path: '/debugDevice', name: '数据传输', component: DebugDevice, menuShow: false},
       ]
     },
     {

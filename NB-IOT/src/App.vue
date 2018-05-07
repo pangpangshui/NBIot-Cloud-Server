@@ -2,8 +2,9 @@
   <!--<div id="app">-->
     <!--<img src="./assets/logo.png">-->
   <keep-alive>
-    <router-view @loginSuccessfully="loginSuccessfully"></router-view>
+    <router-view @loginSuccessfully="loginSuccessfully" include="debug-device"></router-view>
   </keep-alive>
+
   <!--</div>-->
 </template>
 

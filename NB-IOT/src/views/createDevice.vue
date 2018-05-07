@@ -147,7 +147,7 @@
           // this.message.timestamp = '';
 
           this.loading = true;
-          axios.post('/udpServer', {
+          axios.post('/createDevice', {
             deviceID: this.deviceInfo.deviceID,
             devicePwd: this.deviceInfo.devicePwd,
             deviceDetail: this.deviceInfo.deviceDetail,

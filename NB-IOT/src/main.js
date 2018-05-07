@@ -6,6 +6,7 @@ import router from './router'
 import ElementUI from 'element-ui'
 import BaiduMap from 'vue-baidu-map'
 import 'element-ui/lib/theme-chalk/index.css'
+import './config'
 import Socketio from 'vue-socket.io';
 //Vue.use(Socketio, 'http://127.0.0.1:3001'); //声明时已连接上socketio
 

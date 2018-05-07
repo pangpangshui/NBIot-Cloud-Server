@@ -18,6 +18,9 @@
           <el-table-column prop="deviceStatus" label="状态" sortable width="90" height="20"></el-table-column>
           <el-table-column prop="operation" label="操作" sortable width="300">
             <template slot-scope="scope">
+              <!--<el-button @click="$router.push({path: '/debugDevice', params: {name: 'row', dataObj: scope.row}})" type="text" size="small">数据传输</el-button>-->
+              <!--<router-view></router-view>-->
+
               <el-button @click="debugDevice(scope.row)" type="text" size="small">数据传输</el-button>
               <el-button @click="editDevice(scope.row)" type="text" size="small">编辑</el-button>
               <el-button @click="deleteDevice(scope.row)" type="text" size="small">删除</el-button>
@@ -37,7 +40,8 @@
       data() {
         return {
           tableData: [],
-          loading: true
+          loading: true,
+          deInfoRow: {}
         }
       },
       methods: {
@@ -46,7 +50,7 @@
         },
         debugDevice(row) {
           //console.log(row);
-          Bus.$emit('getDeviceInfo', row);
+          this.deInfoRow = row;
           this.$router.push('/debugDevice');
         },
         editDevice(row) {
@@ -65,9 +69,14 @@
             message: '成功加载您的设备信息',
             type: 'success'
           });
-          console.log(response.data);
+          // console.log(response.data);
         })
-      }
+      },
+      destroyed () {
+        Bus.$emit('getDeviceInfo', this.deInfoRow);
+        // console.log("list");
+        // console.log(this.deInfoRow);
+      },
     }
 </script>
 

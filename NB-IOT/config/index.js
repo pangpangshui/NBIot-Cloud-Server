@@ -26,6 +26,16 @@ module.exports = {
         target: 'http://localhost:3000',
         changeOrigin: true
       },
+      '/createDevice': {
+        //target: 'http://193.112.57.70:3000',
+        target: 'http://localhost:3000',
+        changeOrigin: true
+      },
+      '/debugDevice': {
+        //target: 'http://193.112.57.70:3000',
+        target: 'http://localhost:3000',
+        changeOrigin: true
+      },
       '/deviceList': {
         //target: 'http://193.112.57.70:3000',
         target: 'http://localhost:3000',
