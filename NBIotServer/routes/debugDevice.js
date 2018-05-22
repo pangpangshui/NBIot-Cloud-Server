@@ -1,32 +1,47 @@
 let express = require('express');
 let router = express.Router();
-let mongo = require('mongoose');
-let udpServer = require('./../routes/Iot/UDPServer');
 
-router.post('/', (req, res) => {
+var coapServer = require('./Iot/CoAPServer');
+let udpServer = require('./Iot/UDPServer');
+// let socketServer = require('./../routes/SocketIO');
 
-    let format = req.query.deviceID,
-    type = req.query.devicePwd;
-    console.log(format, type);
-    // let db = mongo.createConnection('mongodb://zjq:123zz321@127.0.0.1:27017/NBIot');
-    // let content = { deviceID: param.deviceID, devicePwd: param.devicePwd, deviceName: param.deviceName,
-    //     deviceAddr: param.deviceAddr,deviceDetail: param.deviceDetail };
-    // let monInsert = new devicesDetailInfo(content);
-    // monInsert.save(function(err){
-    //     if(err){
-    //         console.log(err);
-    //         res.end();
-    //     }else{
-    //         console.log('成功插入数据');
-    //         res.json({
-    //             status: '1',
-    //             deviceID: param.deviceID
-    //         });
-    //         res.end();
-    //     }
-    //     db.close();
-    // });
-    res.end();
+// var coap_port = 5683;
+// var host = '0.0.0.0';
+
+function isRealNum(val){
+    // isNaN()函数 把空串 空格 以及NUll 按照0来处理 所以先去除
+    if(val === "" || val == null){
+        return false;
+    }
+    if(!isNaN(val)){
+        return true;
+    }else{
+        return false;
+    }
+}
+
+
+router.post('/deviceInfo', (req, res) => {
+
+    let deID = req.query.deviceID,
+    dePwd = req.query.devicePwd;
+
+    if (!isRealNum(deID)) {
+        global.UdpOrCoAP = 2;
+        let udpmsg = udpServer.CreateUdpServer(deID, dePwd, res);
+        // socketServer.CreateSocketServer();
+    } else {
+        global.UdpOrCoAP = 1;
+        // 启动coap服务器
+        // coap.createServer(coap_routes).listen(coap_port);
+        // console.log('CoAP Server Listening on :' + host + ':' + coap_port);
+        // console.log((res));
+        let response = res;
+        // console.log((response));
+        coapServer.CreateCoAPServer(deID, response);
+    }
+
+
 });
 
 

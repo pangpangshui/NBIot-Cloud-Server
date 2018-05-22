@@ -94,6 +94,17 @@ a {
 
 .introduction {
   text-align: center;
+
+}
+
+.headline {
+  font-family: "Hiragino Sans GB";
+  font-size: 40px;
+}
+
+.content {
+  font-family: "Hiragino Sans GB";
+  font-size: 18px;
 }
 
 .indexImage {
@@ -161,9 +172,51 @@ a {
   padding: 40px 150px;
   margin-top: 0px;
   box-sizing: border-box;
-  height: 340px;
+  height: 200px;
 }
 
 .el-dropdown-link {
   font-size: 16px;
+}
+
+
+
+.time {
+  font-size: 13px;
+  color: #999;
+}
+
+.bottom {
+  margin-top: 13px;
+  line-height: 12px;
+}
+
+.button {
+  padding: 0;
+  float: right;
+}
+
+.image {
+  width: 100%;
+  display: block;
+}
+
+.clearfix:before,
+.clearfix:after {
+  display: table;
+  content: "";
+}
+
+.clearfix:after {
+  clear: both
+}
+
+
+.null{
+  height: 100px;
+}
+
+.detail_button {
+  /*float: right;*/
+  /*margin-bottom: 20px;*/
 }

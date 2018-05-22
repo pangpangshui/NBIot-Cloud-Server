@@ -18,7 +18,7 @@
             <el-input v-model="loginInfo.userPwd" type="password" auto-complete="off"></el-input>
           </el-form-item>
           <el-form-item label="确认密码" prop="ensurePwd">
-            <el-input v-model="loginInfo.ensurePwd" type="password" auto-complete="off" @keyup.enter.native="login"></el-input>
+            <el-input v-model="loginInfo.ensurePwd" type="password" auto-complete="off" @keyup.enter.native="register"></el-input>
           </el-form-item>
           <el-form-item>
             <el-button type="primary" @click="register">注册</el-button>
@@ -102,7 +102,12 @@
           let res = response.data;
           if (res.status == "0") {
             this.loginInfo.nickName = res.result.userName;
-            //this.$router.push('/backmangement');
+            this.$notify({
+              title: '成功',
+              message: this.loginInfo.nickName + '注册成功',
+              type: 'success'
+            });
+            this.$router.push('/users/login');
           } else {
 
           }

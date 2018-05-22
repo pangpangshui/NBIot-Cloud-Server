@@ -84,3 +84,44 @@
 .item {
   margin-bottom: 18px;
 }
+
+
+/*html, body {*/
+  /*height:100%;*/
+  /*font-family: 'SF UI Text', 'San Francisco Text', Roboto, -apple-system, sans-serif;*/
+/*}*/
+
+#chat {
+  height: 380px;
+  /*overflow: hidden;*/
+  display: flex;
+  flex-flow: column;
+  /*position:absolute;*/
+  overflow:auto;
+}
+
+#messages-window {
+  background:#eee;
+  flex: 1 0 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  overflow: auto;
+  align-items:flex-start;
+  padding:20px;
+}
+
+.message {
+  background:gray;
+  color:white;
+  padding:8px 12px;
+  margin-bottom:8px;
+  border-radius:16px;
+  max-width:70%;
+}
+
+.ours {
+  background:#0076FF;
+  align-self:flex-end;
+}
+

@@ -9,21 +9,24 @@
     </el-row>
 
       <el-row class="delistrow">
-        <el-table border width="1500" :data="tableData" stripe style="width: 150%" :default-sort = "{prop: 'deviceID', order: 'ascending'}">
+        <el-table border width="1500" :data="tableData" stripe style="width: 150%">
 
           <el-table-column prop="deviceID" label="设备ID" sortable width="200" height="20"></el-table-column>
           <el-table-column prop="deviceName" label="设备名称" sortable width="150"></el-table-column>
           <el-table-column prop="devicePwd" label="设备密码" sortable width="175"></el-table-column>
           <el-table-column prop="deviceAddr" label="位置" sortable width="300"></el-table-column>
           <el-table-column prop="deviceStatus" label="状态" sortable width="90" height="20"></el-table-column>
-          <el-table-column prop="operation" label="操作" sortable width="300">
+          <el-table-column prop="operation" label="操作" width="300">
             <template slot-scope="scope">
               <!--<el-button @click="$router.push({path: '/debugDevice', params: {name: 'row', dataObj: scope.row}})" type="text" size="small">数据传输</el-button>-->
               <!--<router-view></router-view>-->
 
               <el-button @click="debugDevice(scope.row)" type="text" size="small">数据传输</el-button>
               <el-button @click="editDevice(scope.row)" type="text" size="small">编辑</el-button>
-              <el-button @click="deleteDevice(scope.row)" type="text" size="small">删除</el-button>
+              <!--<el-button @click.native.prevent="deleteDevice(scope.$index, tableData4)" type="text" size="small">删除</el-button>-->
+              <!--<template slot-scope="scope">-->
+                <el-button @click.native.prevent="deleteDevice(scope.$index, tableData)" type="text" size="small">删除</el-button>
+              <!--</template>-->
             </template>
           </el-table-column>
         </el-table>
@@ -41,7 +44,8 @@
         return {
           tableData: [],
           loading: true,
-          deInfoRow: {}
+          deInfoRow: {},
+          deStatus: "离线"
         }
       },
       methods: {
@@ -56,7 +60,15 @@
         editDevice(row) {
             this.$router.push("/createDevice");
         },
-        deleteDevice(row) {
+        deleteDevice(index, rows) {
+          // console.log(rows.toString());
+          // var whatIndex = null;
+          // angular.forEach($scope.rows, function(cb, index) {
+          //   if (cb.ID === ID) {
+          //     whatIndex = index;
+          //   }
+          // });
+          rows.splice(index, 1);
 
         }
       },
@@ -70,10 +82,19 @@
             type: 'success'
           });
           // console.log(response.data);
-        })
+          for(var data in this.tableData){
+            this.tableData[data]['deviceStatus'] = this.deStatus;
+            // console.log("\t",this.tableData[data]);
+          }
+
+        });
+
+
       },
       destroyed () {
-        Bus.$emit('getDeviceInfo', this.deInfoRow);
+        setTimeout(() => {
+          Bus.$emit('getDeviceInfo', this.deInfoRow);
+        }, 300);
         // console.log("list");
         // console.log(this.deInfoRow);
       },

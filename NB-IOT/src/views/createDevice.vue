@@ -14,32 +14,32 @@
         <el-main>
           <el-row class="delistrow">
 
-            <el-form label-width="100px" class="createdevices" :inline="true" v-bind:model="deviceInfo">
+            <el-form label-width="100px" class="createdevices" :inline="true" v-bind:model="deviceInfo" :rules="rules">
               <el-row>
                 <div class="panel-header">创建设备</div>
               </el-row>
               <el-row class="devicebody">
                 <el-col :span="12">
-                  <el-form-item label="设备编号">
+                  <el-form-item label="设备编号" prop="deviceID">
                     <el-input v-model="deviceInfo.deviceID" clearable style="width:400px"></el-input>
                   </el-form-item>
                 </el-col>
                 <el-col :span="12">
-                  <el-form-item label="设备密码" >
+                  <el-form-item label="设备密码" prop="devicePwd">
                     <el-input v-model="deviceInfo.devicePwd" clearable style="width:400px"></el-input>
                   </el-form-item>
                 </el-col>
                 <el-col :span="12">
-                  <el-form-item label="设备名称">
+                  <el-form-item label="设备名称" prop="deviceName">
                     <el-input v-model="deviceInfo.deviceName" clearable style="width:400px"></el-input>
                   </el-form-item>
                 </el-col>
                 <el-col :span="12">
-                  <el-form-item label="设备地址" >
+                  <el-form-item label="设备地址" prop="deviceAddr">
                     <el-input v-model="deviceInfo.deviceAddr" clearable style="width:400px"></el-input>
                   </el-form-item>
                 </el-col>
-                <el-form-item label="设备描述">
+                <el-form-item label="设备描述" prop="deviceDetail">
                   <el-input v-model="deviceInfo.deviceDetail" clearable style="width:400px"></el-input>
                 </el-form-item>
               </el-row>
@@ -79,8 +79,9 @@
 
 <script>
   import './../assets/css/createDevice.css'
-  import Socketio from 'vue-socket.io';
   import axios from 'axios'
+  import Vue from 'vue'
+  import Bus from './../API/bus'
   //Vue.use(Socketio, 'http://127.0.0.1:3001'); //声明时已连接上socketio
     export default {
       name: "create-devices",
@@ -114,7 +115,18 @@
             "timestamp": ""
           },
           areTyping: [],
-          loading: false
+          loading: false,
+          rules: {
+            deviceID: [
+              { required: true, trigger: 'blur' }
+            ],
+            devicePwd: [
+              { required: true, message: '请输入密码', trigger: 'blur' }
+            ],
+            deviceName: [
+              { required: true, message: '请输入设备名称', trigger: 'blur' }
+            ]
+          }
         }
       },
       methods: {
@@ -138,14 +150,15 @@
         //
         // },
         send() {
-          // this.message.type = "chat";
-          // this.message.user = Socketio.id;
-          // Socketio.emit('chat message', this.message);
-          // this.message.type = '';
-          // this.message.user = '';
-          // this.message.text = '';
-          // this.message.timestamp = '';
 
+          if (this.deviceInfo.deviceID == "" || this.deviceInfo.devicePwd == "" || this.deviceInfo.deviceName == "") {
+            this.$message({
+              message: '请填写设备ID/设备密码/设备名称',
+              center: true,
+              type: 'error'
+            });
+            return;
+          }
           this.loading = true;
           axios.post('/createDevice', {
             deviceID: this.deviceInfo.deviceID,
@@ -177,36 +190,13 @@
         }
       },
       created() {
-        // Socketio.on('user joined', function(socketId) {
-        //   axios.get('/onlineUsers').then(function(response) {
-        //     for (let key in response) {
-        //       if (this.connectedUsers.indexOf(key) <= -1) {
-        //         this.connectedUsers.push(key);
-        //       }
-        //     }
-        //     console.log(this.connectedUsers);
-        //   }.bind(this));
-        //   let infomsg = {
-        //     "type:": "info",
-        //     "msg": "User " + socketId + "has joined"
-        //   }
-        //   this.message.push(infomsg);
-        // }.bind(this));
-        //
-        // Socketio.on('chat.message', function(message) {
-        //   this.message.push(message);
-        // }.bind(this));
-        // Socketio.on('user left', function(socketId) {
-        //   let index = this.connectedUsers.indexOf(socketId);
-        //   if (index >= 0) {
-        //     this.connectedUsers.splice(index, 1);
-        //   }
-        //   let infomsg = {
-        //     "type": "info",
-        //     "msg": "User" + socketId + "has left"
-        //   }
-        //   this.message.push(infomsg);
-        // }.bind(this));
+        // Bus.$on('getDeviceInfo', (row) => {
+        //   console.log(row);
+        //   this.$nextTick(function () {
+        //     global.DEVINFO = row;
+        //   });
+        // });
+        // this.deviceInfo = global.DEVINFO;
       },
       mounted() {
         function randomWord(randomFlag, min, max){

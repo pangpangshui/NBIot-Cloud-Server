@@ -4,7 +4,7 @@ import Index from './../views/index'
 import Login from '@/views/login'
 import Register from './../views/register'
 import BackmangementHome from './../views/backManagement'
-import Coap from './../views/coap'
+// import Coap from './../views/coap'
 import DeviceList from './../views/deviceList'
 import DebugDevice from './../views/debugDevice'
 import CreateDevice from './../views/createDevice'
@@ -14,7 +14,7 @@ import ModifyUserInfo from './../views/modifyUserInfo'
 import MyProject from './../views/myProject'
 import SharedProject from'./../views/sharedProject'
 // import ManageHeader from './../components/nbManageHeader'
-import Test from '@/components/HelloWorld'
+import TestCatalog from './../views/testCatalog'
 
 Vue.use(Router)
 
@@ -89,15 +89,15 @@ export default new Router({
     //   name: 'DebugDevice',
     //   component: DebugDevice
     // },
+    // {
+    //   path: '/coap',
+    //   name: 'Coap',
+    //   component: Coap
+    // },
     {
-      path: '/coap',
-      name: 'Coap',
-      component: Coap
-    },
-    {
-      path: '/test',
-      name: 'Test',
-      component: Test
+      path: '/testCatalog',
+      name: 'TestCatalog',
+      component: TestCatalog
     }
   ]
 })

@@ -1,0 +1,29 @@
+
+.cardName {
+  font-size: 40px;
+}
+
+
+.el-col-12 {
+  width: 50%;
+}
+
+
+.cardImageSet {
+  width: 50%;
+}
+
+.mainConCon {
+  height: 1200px;
+  width: 1400px;
+  margin-top: 30px;
+}
+
+
+.null {
+  height: 20px;
+}
+
+.box-card {
+  width: 1300px;
+}

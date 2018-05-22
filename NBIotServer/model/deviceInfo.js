@@ -5,6 +5,8 @@ var Schema = mongoose.Schema;
 var deviceInfoSchema = new Schema({
     "deviceID": String,
     "deviceData": String,
+    "dataDir": String,
+    "protocol": String,
     "date": String
 });
 

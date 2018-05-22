@@ -192,7 +192,7 @@ int main(void)
         }
         case NB_UDP_Read: {
             printf("\r\n BC95 Module is initializing...");
-            initbc95(&bc95_cfg);
+            recFromUdp_bc95(&bc95_cfg);
             nb_state = NB_END;
             break;
         }

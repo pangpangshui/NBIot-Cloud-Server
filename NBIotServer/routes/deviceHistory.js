@@ -33,7 +33,7 @@ router.get('/devices/:device_id/data.json', (req, res) => {
     console.log('device_id: ' + device_id);
 
     let db = mongoose.createConnection('mongodb://zjq:123zz321@127.0.0.1:27017/NBIot');
-    db.find(function(err){
+    db.find( (err) => {
         if(err){
             console.log(err);
             res.end();

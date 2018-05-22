@@ -1,12 +1,16 @@
 <template>
     <el-header style="height: 100px;">
-      <div>
-        <h1 class="hlogo">
-          <router-link to="/">
-            <img src="./../assets/images/logo.png" alt="NB-Iot Cloud" class="logo"></img>
-          </router-link>
-        </h1>
-        <ul class="nav">
+      <!--<div>-->
+        <el-row :gutter="20">
+          <el-col :span="6">
+            <h1 class="hlogo">
+              <router-link to="/">
+                <img src="./../assets/images/logo.png" alt="NB-Iot Cloud" class="logo"></img>
+              </router-link>
+            </h1>
+          </el-col>
+          <el-col :span="6" :offset="12">
+        <!--<ul class="nav">-->
           <li class="nav-item">
             <el-input v-model="input" placeholder="搜索" suffix-icon="el-icon-search"></el-input>
           </li>
@@ -48,9 +52,10 @@
               </el-dropdown>
             <!--</router-link>-->
           </li>
-        </ul>
-
-      </div>
+        <!--</ul>-->
+          </el-col>
+        </el-row>
+      <!--</div>-->
     </el-header>
 </template>
 

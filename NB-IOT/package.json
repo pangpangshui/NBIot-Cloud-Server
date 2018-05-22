@@ -14,12 +14,15 @@
   "dependencies": {
     "axios": "^0.18.0",
     "coap": "^0.21.0",
+    "echarts": "^4.1.0",
     "element-ui": "^2.2.0",
     "proxytable": "^1.0.1",
     "socket.io": "^2.1.0",
+    "socket.io-client": "^2.1.0",
     "vue": "^2.5.2",
     "vue-baidu-map": "^0.20.7",
     "vue-router": "^3.0.1",
+    "vue-seamless-scroll": "^1.1.12",
     "vue-socket.io": "^2.1.1-b"
   },
   "devDependencies": {

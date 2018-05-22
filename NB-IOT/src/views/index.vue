@@ -8,43 +8,55 @@
     <el-container direction="vertical">
     <nb-head></nb-head>
     <el-main>
-      <div>
-        <div class="introduction">
-          <h1>NB-Iot开源云平台</h1>
-          <p>一套解决当下窄带物联网数据透传的方案, 简单快速</p>
-        </div>
-        <div class="indexImage">
-          <img src="./../assets/images/image4.jpg"></img>
-        </div>
-        <div class="cards">
-          <ul>
-            <li class="card-item">
-              <div class="card">
-                <img src="./../assets/images/image2.png"></img>
+
+        <el-row :gutter="20">
+          <el-col :span="12" :offset="6">
+            <div style="padding: 14px;" class="introduction">
+              <span class="headline">NB-Iot开源云平台</span>
+            </div>
+            <el-card :body-style="{ padding: '5px' }" shadow="hover">
+              <img src="./../assets/images/NB-IoT-header.png" class="image">
+              <div style="padding: 14px;" class="introduction">
+                <span class="content">一套解决当下窄带物联网数据透传的方案, 简单快速</span>
+              </div>
+            </el-card>
+          </el-col>
+        </el-row>
+      <el-row class="null"></el-row>
+
+        <el-row :gutter="20">
+          <el-col :span="6" :offset="2">
+            <el-card :body-style="{ padding: '5px' }" shadow="hover">
+              <img src="./../assets/images/NBIot2.jpg" class="image"></img>
+              <div style="padding: 14px;" class="introduction">
                 <h3>介绍</h3>
-                <p>阅读介绍，了解NB-Iot的方方面面</p>
-                <a href="/">查看详情</a>
+                <p>阅读介绍，了解NB-Iot的方方面面</p> <br><br><br>
+                <el-button type="primary" round class="detail_button">查看详情</el-button>
               </div>
-            </li>
-            <li class="card-item">
-              <div class="card">
-                <img src="./../assets/images/image3.png"></img>
+            </el-card>
+          </el-col>
+          <el-col :span="6" :offset="1">
+            <el-card :body-style="{ padding: '5px' }" shadow="hover">
+              <img src="./../assets/images/monitoring_NB-IoT.png" class="image"></img>
+              <div style="padding: 14px;" class="introduction">
                 <h3>API</h3>
-                <p>API文档, 助力开发</p>
-                <a href="/">查看详情</a>
+                <p>提供终端SDK、APP SDK，开放丰富的REST API接口，集成消息推送接口</p><br><br>
+                <el-button type="primary" round class="detail_button">查看详情</el-button>
               </div>
-            </li>
-            <li class="card-item">
-              <div class="card">
-                <img src="./../assets/images/image6.png"></img>
-                <h3>预留</h3>
-                <p>预留位</p>
-                <a href="/">查看详情</a>
+            </el-card>
+          </el-col>
+          <el-col :span="6" :offset="1">
+            <el-card :body-style="{ padding: '20px' }" shadow="hover">
+              <img src="./../assets/images/nb_iot.png" class="image"></img>
+              <div style="padding: 14px;" class="introduction">
+                <h3>设备管理</h3>
+                <p>终端注册开通与生命周期管理，提供状态、故障、流量的不间断监控</p>
+                <el-button type="primary" round class="detail_button">查看详情</el-button>
               </div>
-            </li>
-          </ul>
-        </div>
-      </div>
+            </el-card>
+          </el-col>
+        </el-row>
+      <el-row class="null"></el-row>
     </el-main>
     <nb-foot></nb-foot>
     </el-container>
