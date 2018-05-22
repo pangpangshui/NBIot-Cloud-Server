@@ -10,3 +10,6 @@ NB-Iot project including a cloud server
   目前以实现UDP和CoAP协议的通信，本项目将持续开发，后续会支持MQTT、TCP等协议，并支持Adruino、树莓派、ARM9以上等硬件。
   
   前端后台部署需要先运行```cnpm i```安装所有依赖的模块。
+
+
+目前测试硬件为stm32f103c8t6+bc95-b8(移动sim卡)。由于电信限制sim卡的对个人服务器的访问，电信的暂时不支持，如果您的服务器已经加入了电信白名单，那应该也是可以正常通信的。
