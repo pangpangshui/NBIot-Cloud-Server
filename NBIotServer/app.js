@@ -17,6 +17,7 @@ var deviceHistory = require('./routes/deviceHistory');
 var deviceList = require('./routes/deviceList');
 var createDevice = require('./routes/createDevice');
 var debugDevice = require('./routes/debugDevice');
+var staticsDeInfo = require('./routes/staticsDeInfo');
 var cors = require('cors');
 
 
@@ -62,8 +63,7 @@ app.use('/deviceList',deviceList);
 app.use('/createDevice',createDevice);
 app.use('/debugDevice',debugDevice);
 app.use('/modifyUserInfo',modifyUserInfo);
-
-
+app.use('/getStaticsDeInfo',staticsDeInfo);
 
 
 // catch 404 and forward to error handler

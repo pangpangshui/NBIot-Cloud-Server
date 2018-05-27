@@ -46,6 +46,11 @@ module.exports = {
         // target: 'http://localhost:3000',
         changeOrigin: true
       },
+      '/getStaticsDeInfo': {
+        target: 'http://193.112.57.70:3000',
+        // target: 'http://localhost:3000',
+        changeOrigin: true
+      },
       // '/coap': {
       //   target: 'http://localhost:3000',
       //   changeOrigin: true

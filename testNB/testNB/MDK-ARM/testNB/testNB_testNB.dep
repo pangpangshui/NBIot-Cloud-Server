@@ -376,7 +376,7 @@ I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_flash_ex.h)(0x5AC884BA)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_pwr.h)(0x5AC884BA)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_uart.h)(0x5AC884BA)
 I (../Inc/stm32f1xx_it.h)(0x5AD1CDE2)
-F (../Src/main.c)(0x5AD369A7)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I../Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I../Drivers/CMSIS/Include-I C:\Users\SHUI\Desktop\graduation_design\NBIOT\testNB\testNB\MDK-ARM\RTE-I E:\Keil_v5\ARM\PACK\ARM\CMSIS\4.2.0\CMSIS\Include-I E:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\1.0.5\Device\Include-D__UVISION_VERSION="514" -D_RTE_ -DSTM32F10X_MD -DUSE_HAL_DRIVER -DSTM32F103xB-o testnb\main.o --omf_browse testnb\main.crf --depend testnb\main.d)
+F (../Src/main.c)(0x5B0533DC)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I../Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I../Drivers/CMSIS/Include-I C:\Users\SHUI\Desktop\graduation_design\NBIOT\testNB\testNB\MDK-ARM\RTE-I E:\Keil_v5\ARM\PACK\ARM\CMSIS\4.2.0\CMSIS\Include-I E:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\1.0.5\Device\Include-D__UVISION_VERSION="514" -D_RTE_ -DSTM32F10X_MD -DUSE_HAL_DRIVER -DSTM32F103xB-o testnb\main.o --omf_browse testnb\main.crf --depend testnb\main.d)
 I (../Inc/main.h)(0x5AD1CDE3)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal.h)(0x5AC884BA)
 I (../Inc/stm32f1xx_hal_conf.h)(0x5AD1CDE3)
@@ -407,7 +407,7 @@ I (../Inc/NBBC95.h)(0x5AD368CD)
 I (../Inc/gpio.h)(0x5AD1CDE0)
 I (../Inc/NBBC95_cfg.h)(0x5AC5EC49)
 I (../Inc/uartTimerPoll.h)(0x5AC5F4D0)
-F (../Src/usart.c)(0x5AD30E95)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I../Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I../Drivers/CMSIS/Include-I C:\Users\SHUI\Desktop\graduation_design\NBIOT\testNB\testNB\MDK-ARM\RTE-I E:\Keil_v5\ARM\PACK\ARM\CMSIS\4.2.0\CMSIS\Include-I E:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\1.0.5\Device\Include-D__UVISION_VERSION="514" -D_RTE_ -DSTM32F10X_MD -DUSE_HAL_DRIVER -DSTM32F103xB-o testnb\usart.o --omf_browse testnb\usart.crf --depend testnb\usart.d)
+F (../Src/usart.c)(0x5B042901)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I../Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I../Drivers/CMSIS/Include-I C:\Users\SHUI\Desktop\graduation_design\NBIOT\testNB\testNB\MDK-ARM\RTE-I E:\Keil_v5\ARM\PACK\ARM\CMSIS\4.2.0\CMSIS\Include-I E:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\1.0.5\Device\Include-D__UVISION_VERSION="514" -D_RTE_ -DSTM32F10X_MD -DUSE_HAL_DRIVER -DSTM32F103xB-o testnb\usart.o --omf_browse testnb\usart.crf --depend testnb\usart.d)
 I (../Inc/usart.h)(0x5AD1CDE1)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal.h)(0x5AC884BA)
 I (../Inc/stm32f1xx_hal_conf.h)(0x5AD1CDE3)
@@ -490,7 +490,7 @@ I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_flash.h)(0x5AC884BA)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_flash_ex.h)(0x5AC884BA)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_pwr.h)(0x5AC884BA)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_uart.h)(0x5AC884BA)
-F (..\Src\dma_fun.c)(0x5AD2F72B)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I../Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I../Drivers/CMSIS/Include-I C:\Users\SHUI\Desktop\graduation_design\NBIOT\testNB\testNB\MDK-ARM\RTE-I E:\Keil_v5\ARM\PACK\ARM\CMSIS\4.2.0\CMSIS\Include-I E:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\1.0.5\Device\Include-D__UVISION_VERSION="514" -D_RTE_ -DSTM32F10X_MD -DUSE_HAL_DRIVER -DSTM32F103xB-o testnb\dma_fun.o --omf_browse testnb\dma_fun.crf --depend testnb\dma_fun.d)
+F (..\Src\dma_fun.c)(0x5B0420C0)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I../Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I../Drivers/CMSIS/Include-I C:\Users\SHUI\Desktop\graduation_design\NBIOT\testNB\testNB\MDK-ARM\RTE-I E:\Keil_v5\ARM\PACK\ARM\CMSIS\4.2.0\CMSIS\Include-I E:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\1.0.5\Device\Include-D__UVISION_VERSION="514" -D_RTE_ -DSTM32F10X_MD -DUSE_HAL_DRIVER -DSTM32F103xB-o testnb\dma_fun.o --omf_browse testnb\dma_fun.crf --depend testnb\dma_fun.d)
 I (../Inc/dma_fun.h)(0x5AD210C5)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal.h)(0x5AC884BA)
 I (../Inc/stm32f1xx_hal_conf.h)(0x5AD1CDE3)
@@ -517,7 +517,7 @@ I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_flash_ex.h)(0x5AC884BA)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_pwr.h)(0x5AC884BA)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_uart.h)(0x5AC884BA)
 I (E:\Keil_v5\ARM\ARMCC\include\string.h)(0x5475F300)
-F (..\Src\NBBC95.c)(0x5AD4AC6E)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I../Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I../Drivers/CMSIS/Include-I C:\Users\SHUI\Desktop\graduation_design\NBIOT\testNB\testNB\MDK-ARM\RTE-I E:\Keil_v5\ARM\PACK\ARM\CMSIS\4.2.0\CMSIS\Include-I E:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\1.0.5\Device\Include-D__UVISION_VERSION="514" -D_RTE_ -DSTM32F10X_MD -DUSE_HAL_DRIVER -DSTM32F103xB-o testnb\nbbc95.o --omf_browse testnb\nbbc95.crf --depend testnb\nbbc95.d)
+F (..\Src\NBBC95.c)(0x5B04D42C)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I../Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I../Drivers/CMSIS/Include-I C:\Users\SHUI\Desktop\graduation_design\NBIOT\testNB\testNB\MDK-ARM\RTE-I E:\Keil_v5\ARM\PACK\ARM\CMSIS\4.2.0\CMSIS\Include-I E:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\1.0.5\Device\Include-D__UVISION_VERSION="514" -D_RTE_ -DSTM32F10X_MD -DUSE_HAL_DRIVER -DSTM32F103xB-o testnb\nbbc95.o --omf_browse testnb\nbbc95.crf --depend testnb\nbbc95.d)
 I (../Inc/NBBC95.h)(0x5AD368CD)
 I (E:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x5475F300)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal.h)(0x5AC884BA)

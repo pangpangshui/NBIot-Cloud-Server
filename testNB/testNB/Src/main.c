@@ -59,6 +59,7 @@ typedef enum {
     NB_Module,
     NB_SIGN,
     NB_UDP_Create,
+    NB_UDP_REG,
     NB_UDP_Send,
     NB_UDP_Read,
     NB_UDP_Close,
@@ -183,10 +184,22 @@ int main(void)
             nb_state = NB_END;
             break;
         }
+        case NB_UDP_REG: {
+            //发送注册包
+            printf("\r\n  BC95 Module register to Cloud");
+            char regPacket[30];
+            uint8_t msgLen = 0;
+            
+            msgLen = sprintf(regPacket, "ID=GSnr84I0cLCzeHJ&pwd=testpwdNB123");
+            regPacket[msgLen] = 0;
+            sendToUdpNBModule(&bc95_cfg, msgLen, regPacket);
+            processRecord |= NB_PROCESS_UDP_REG;
+            nb_state = NB_END;
+        }
         case NB_UDP_Send: {
             printf("\r\n BC95 Module Send Messsage to UDP Server");
             //char* userPacket = "test\r\n";
-            sendToUdpNBModule(&bc95_cfg, 10, "test\r\n");
+            sendToUdpNBModule(&bc95_cfg, 10, "testupUDP");
             nb_state = NB_END;
             break;
         }
@@ -309,7 +322,7 @@ int NB_MsgreportCallback(msg_type mType, int len, char* msg)
             if (*msg == 'S') {
                 printf("\r\n初始化成功");
                 processRecord |= NB_PROCESS_INIT;
-                nb_state = NB_UDP_Create;
+                //nb_state = NB_UDP_Create;
             }
             break;
         case MSG_IMSI:
@@ -403,21 +416,30 @@ void readNBStateFromUart(void)
     }
     else if (receBufferPC[0] == '2') {
         if (processRecord & NB_PROCESS_INIT)
-            nb_state = NB_SIGN;
+            //nb_state = NB_SIGN;
+            nb_state = NB_Module;
     }
         
     else if (receBufferPC[0] == '3') {
         if (processRecord & NB_PROCESS_INIT)
-            nb_state = NB_Module;
+            //nb_state = NB_Module;
+            nb_state = NB_UDP_Create;
     }
     else if (receBufferPC[0] == '4') {
-        if (processRecord & NB_PROCESS_INIT)
-            nb_state = NB_UDP_Create;
+        if (processRecord & NB_PROCESS_INIT) {
+            if (processRecord & NB_PROCESS_UDP_CREATE)
+                nb_state = NB_UDP_REG;
+        }
+            //nb_state = NB_UDP_Create;
+        
     }
     else if (receBufferPC[0] == '5') {
         if (processRecord & NB_PROCESS_INIT) {
-            if (processRecord & NB_PROCESS_UDP_CREATE)
-                nb_state = NB_UDP_Send;
+            if (processRecord & NB_PROCESS_UDP_CREATE) {
+                if (processRecord & NB_PROCESS_UDP_REG)
+                    nb_state = NB_UDP_Send;
+            }
+                
         }
     }
     else if (receBufferPC[0] == '6')
@@ -426,7 +448,7 @@ void readNBStateFromUart(void)
         nb_state = NB_UDP_Close;
     else if (receBufferPC[0] == '8') {
         if (processRecord & NB_PROCESS_INIT)
-            if (!(processRecord & NB_Coap_Server))
+            //if (!(processRecord & NB_Coap_Server))
             nb_state = NB_Coap_Server;
     }
     else if (receBufferPC[0] == '9') {

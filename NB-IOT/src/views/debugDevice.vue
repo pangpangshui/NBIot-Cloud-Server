@@ -216,6 +216,7 @@
               axios.post("/debugDevice/deviceInfo?deviceID=" + this.deInfo.deviceID + "&devicePwd=" + this.deInfo.devicePwd).then((response) => {
                 // axios.post("/debugDevice?deviceID=" + this.deInfo.deviceID + "&devicePwd=" + this.deInfo.devicePwd).then((response) => {
                 this.status = response.data.status;
+                console.log(response.data.status);
                 if (this.status == "1") {
                   this.$notify({
                     title: '成功',

@@ -119,7 +119,7 @@ const NBOperaFun bc95fun = {
 #define BAND_700MHZ_ID      28
 #define BAND_700MHZ_STR     "700"
 
-#define LOCAL_UDP_SET       "DGRAM,17,5683,1"
+#define LOCAL_UDP_SET       "DGRAM,17,5783,1"
 #define REMOTE_SERVER_IP    "193.112.57.70"
 #define REMOTE_SERVER_PORT  "18777"
 
@@ -655,7 +655,7 @@ uint8_t coapSentMsg_bc95(NBModule bc95, int len, char* msg)
         sprintf(&buf[msgLen + (i << 1)], "%02X", (unsigned char)msg[i]);
     
     InitATcmd(&atcmd, AT_NMGS, buf,CMD_SET);
-    atcmd.max_timeout = 2000;
+    atcmd.max_timeout = 6000;
     
     nb_state.state = PROCESS_COAP_SEND;
     nb_state.sub_state = 1;
@@ -1009,13 +1009,14 @@ static unsigned char GotoNextCmd(void)
                 break;
             case ACTION_CGATT:
                 InitATcmd(&atcmd, AT_CGATT, "1", CMD_SET);
-                atcmd.max_timeout = 3000;
+                atcmd.max_timeout = 2000;
                 atcmd.repeatPeri = 1;//true
                 break;
             case ACTION_CGATT_QUERY:
                 InitATcmd(&atcmd, AT_CGATT, NULL, CMD_READ);
-                atcmd.max_timeout = 5000;
+                atcmd.max_timeout = 2000;
                 atcmd.repeatPeri = 1;
+                atcmd.cmd_try = 100;
                 atcmd.expectReply = "CGATT:1";
                 break;
             //coap 

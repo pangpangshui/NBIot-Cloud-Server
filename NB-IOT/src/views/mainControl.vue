@@ -21,7 +21,7 @@
                     <!--<el-row class="null"></el-row>-->
                     <br><br>
                     <el-row :gutter="20">
-                      <li class="cardName" style="list-style-type: none; font-size: 25px; float: right; color: #c22356">1</li>
+                      <li class="cardName" style="list-style-type: none; font-size: 25px; float: right; color: #c22356"><label>{{statisticsDeviceInfo.deviceNum}}</label></li>
                     </el-row>
                   </el-col>
                 </el-row>
@@ -44,7 +44,7 @@
                     <!--<el-row class="null"></el-row>-->
                     <br><br>
                     <el-row :gutter="20">
-                      <li class="cardName" style="list-style-type: none; font-size: 25px; float: right; color: #c22356">1</li>
+                      <li class="cardName" style="list-style-type: none; font-size: 25px; float: right; color: #c22356"><label>{{statisticsDeviceInfo.dataDirRece}}</label></li>
                     </el-row>
                   </el-col>
                 </el-row>
@@ -67,7 +67,7 @@
                     <!--<el-row class="null"></el-row>-->
                     <br><br>
                     <el-row :gutter="20">
-                      <li class="cardName" style="list-style-type: none; font-size: 25px; float: right; color: #c22356">1</li>
+                      <li class="cardName" style="list-style-type: none; font-size: 25px; float: right; color: #c22356"><label>{{statisticsDeviceInfo.dataDirTran}}</label></li>
                     </el-row>
                   </el-col>
                 </el-row>
@@ -90,7 +90,7 @@
                     <!--<el-row class="null"></el-row>-->
                     <br><br>
                     <el-row :gutter="20">
-                      <li class="cardName" style="list-style-type: none; font-size: 25px; float: right; color: #c22356">1</li>
+                      <li class="cardName" style="list-style-type: none; font-size: 25px; float: right; color: #c22356"><label>{{statisticsDeviceInfo.userNum}}</label></li>
                     </el-row>
                   </el-col>
                 </el-row>
@@ -160,8 +160,28 @@
   require('echarts/lib/component/title');
   require("echarts/lib/chart/pie");
   import "./../assets/css/mainControl.css"
+  import axios from 'axios'
     export default {
         name: "main-control",
+        data() {
+          return {
+            statisticsDeviceInfo: {
+              deviceNum: '0', //设备数量
+              dataDirTran: '0', //下行数据
+              dataDirRece: '0', //上行数据
+              userNum: '1' //用户数量
+            }
+          }
+        },
+        created() {
+          axios.get("/getStaticsDeInfo").then((response) => {
+            console.log(response.data);
+            this.statisticsDeviceInfo.deviceNum = response.data[2].deNum;
+            this.statisticsDeviceInfo.dataDirTran = response.data[1].tranNum;
+            this.statisticsDeviceInfo.dataDirRece = response.data[0].receNum;
+            this.statisticsDeviceInfo.dataDirRece = response.data[0].receNum;
+          })
+        },
         mounted() {
           let deviceStatistics = echarts.init(document.getElementById('deStatistics'));
           let colors = ['#5793f3', '#d14a61', '#675bba'];
@@ -202,7 +222,7 @@
                     }
                   }
                 },
-                data: ["2016-1", "2016-2", "2016-3", "2016-4", "2016-5", "2016-6", "2016-7", "2016-8", "2016-9", "2016-10", "2016-11", "2016-12"]
+                data: ["2017-10", "2017-11", "2017-12", "2018-1", "2018-2", "2018-3", "2018-4", "2018-5"]
               },
               {
                 type: 'category',
@@ -223,7 +243,7 @@
                     }
                   }
                 },
-                data: ["2015-1", "2015-2", "2015-3", "2015-4", "2015-5", "2015-6", "2015-7", "2015-8", "2015-9", "2015-10", "2015-11", "2015-12"]
+                data: ["2017-10", "2017-11", "2017-12", "2018-1", "2018-2", "2018-3", "2018-4", "2018-5"]
               }
             ],
             yAxis: [
@@ -324,7 +344,7 @@
                     }
                   }
                 },
-                data: ["2016-1", "2016-2", "2016-3", "2016-4", "2016-5", "2016-6", "2016-7", "2016-8", "2016-9", "2016-10", "2016-11", "2016-12"]
+                data: ["2017-10", "2017-11", "2017-12", "2018-1", "2018-2", "2018-3", "2018-4", "2018-5"]
               },
               {
                 type: 'category',
@@ -345,7 +365,7 @@
                     }
                   }
                 },
-                data: ["2015-1", "2015-2", "2015-3", "2015-4", "2015-5", "2015-6", "2015-7", "2015-8", "2015-9", "2015-10", "2015-11", "2015-12"]
+                data: ["2017-10", "2017-11", "2017-12", "2018-1", "2018-2", "2018-3", "2018-4", "2018-5"]
               }
             ],
             yAxis: [
@@ -413,7 +433,7 @@
                     }
                   }
                 },
-                data: ["2016-1", "2016-2", "2016-3", "2016-4", "2016-5", "2016-6", "2016-7", "2016-8", "2016-9", "2016-10", "2016-11", "2016-12"]
+                data: ["2017-10", "2017-11", "2017-12", "2018-1", "2018-2", "2018-3", "2018-4", "2018-5"]
               },
               {
                 type: 'category',
@@ -434,7 +454,7 @@
                     }
                   }
                 },
-                data: ["2015-1", "2015-2", "2015-3", "2015-4", "2015-5", "2015-6", "2015-7", "2015-8", "2015-9", "2015-10", "2015-11", "2015-12"]
+                data: ["2017-10", "2017-11", "2017-12", "2018-1", "2018-2", "2018-3", "2018-4", "2018-5"]
               }
             ],
             yAxis: [

@@ -76,6 +76,7 @@ uint16_t usartDMA_Write(uint8_t *buf, uint16_t len)
             dmaR_Conf.sendBuf[txSel][txIdx++] = buf[count];
         }
     }
+    dmaR_Conf.txIdx[txSel] = txIdx;
     
     if (dmaR_Conf.txIdx[(txSel ^ 1)] == 0)
         dmaR_Conf.txDMApending = 1;

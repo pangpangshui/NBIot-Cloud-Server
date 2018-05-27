@@ -21,7 +21,8 @@ module.exports = {
             }
 
             else if ((msg == "ID=" + deID + "&pwd=" + dePwd) || global.udpRegisterFlag == 1){
-                serverSocket.send(msg, 0, msg.length, rinfo.port, rinfo.address);
+                if (msg != "ID=" + deID + "&pwd=" + dePwd)
+                    serverSocket.send(msg, 0, msg.length, rinfo.port, rinfo.address);
 
                 if ((msg == "ID=" + deID + "&pwd=" + dePwd) && global.udpRegisterFlag == 0) {
                     global.udpRegisterFlag = 1;

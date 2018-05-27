@@ -15,7 +15,7 @@ module.exports  = {
             var server = http.createServer((req, res) => {
 
             }).listen(3200, "10.135.50.141");//创建http服务
-            // }).listen(3200, "193.112.57.70");//创建http服务
+            // }).listen(3200, "127.0.0.1");//创建http服务
             console.log('Server running at http://10.135.50.141:3200/');
             // console.log('Server running at http://193.112.57.70:3200/');
             io = require('socket.io').listen(server);
@@ -59,7 +59,7 @@ module.exports  = {
                 socket.emit('TransUdpData', {//触发emit,前端接收
                     transUdpData: Data
                 });
-                if ((serverSocket != null && rport != null && raddress != null) && receMsg != '') {
+                if ((serverSocket != null && rport != null && raddress != null) && Data != '') {
                     serverSocket.send(Data, 0, Data.length, rport, raddress);
                     StoreDeInfo.storeDeviceInfo(deID, Data, "下行数据", "UDP");
                 }

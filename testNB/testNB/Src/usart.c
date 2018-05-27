@@ -268,11 +268,11 @@ void HAL_DMA_UsartInit(BC95_SP_ReceiveCallback rec_cb, uint32_t baud)
 //DMA串口写数据
 void HAL_USART_Write(uint8_t *buf, uint16_t len)
 {
-    //buf[len] = 0;
+    buf[len] = 0;
     printf("\r\n->:%s", buf);//uart2, 输出调试信息
     usartDMA_Write(buf, len);
     HAL_Delay(100);
-    usart_dma_send(buf, len);
+    //usart_dma_send(buf, len);
     //buf[len] = 0;
 }
 

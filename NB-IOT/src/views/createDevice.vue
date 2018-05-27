@@ -159,7 +159,7 @@
             });
             return;
           }
-          this.loading = true;
+          // this.loading = true;
           axios.post('/createDevice', {
             deviceID: this.deviceInfo.deviceID,
             devicePwd: this.deviceInfo.devicePwd,
@@ -176,7 +176,7 @@
                 message: '设备ID: ' + res.deviceID,
                 type: 'success'
               });
-              this.loading = false;
+              // this.loading = false;
               this.$router.push('/deviceList');
             } else {
 

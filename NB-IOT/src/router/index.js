@@ -63,7 +63,7 @@ export default new Router({
     },
     {
       path: '/backmangementHome',
-      name: '在线编程',
+      name: '应用编辑',
       component: BackmangementHome,
       leaf:true,
       menuShow: true,
