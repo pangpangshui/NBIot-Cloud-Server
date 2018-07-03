@@ -7,7 +7,7 @@ NB-Iot project including a cloud server
 
   第一部分由前端后台和数据库构成，前端对应的是NBIot子项目，后台对应的是NBIotServer子项目。前端采用Vue.js开发，后端采用Node.js开发。具体技术可参考pdf文档。数据库采用MongoDB，具体的集合设计也可参考pdf文档。
 
-  目前以实现UDP和CoAP协议的通信，本项目将保持更新，后续会支持MQTT、TCP等协议，并支持Adruino、树莓派、ARM9以上等硬件。
+  目前已实现UDP和CoAP协议的通信，本项目将保持更新，后续会支持MQTT、TCP等协议，并支持Adruino、树莓派、ARM9以上等硬件。
 
   前端后台部署需要先运行```cnpm i```安装所有依赖的模块。
 
@@ -19,17 +19,17 @@ NB-Iot project including a cloud server
 
 
 # 关于如何部署该云平台
---
-##后端程序部署
+
+## 后端程序部署
 后端采用node开发，有两种办法可以运行服务端程序。
 首先，需要在服务端安装node环境，关于如何安装，请根据不同的操作系统自己寻找教程，之后进行下一步。
 1. 第一种，进入NBIotServer文件夹，运行`cnpm i --save`命令，安装好依赖包。之后运行`node bin/www`命令即可，此时服务端已运行。
 2. 第二种，使用pm2进行运维。首先安装pm2工具，之后运行`pm2 start 路径/NBIotServer/bin/www`，此时服务端已运行。
 
-#####注意
+##### 注意
 1. 服务端目前只能实现一次CoAP的通信流程，之后需要重新运行才可以重新通信，主要是端口变了没改回来，需要后续优化代码才可以。
 2. 服务端需要用到MongoDB，所以需要自己安装MongoDB，并根据需要更改后端关于MongoDB的设置，即数据库，document和账号密码。
 
---
-##前端部署
+
+## 前端部署
 前端采用vue开发，同样需要运行`cnpm i --save`命令安装所需的模块，前端可在本地部署或者服务器部署，已采用跨域处理。之后使用`cnpm run dev`命令即可运行前端。打开浏览器，输入http://ip即可访问网站。
