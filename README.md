@@ -15,7 +15,12 @@ NB-Iot project including a cloud server
 目前测试硬件为stm32f103c8t6+bc95-b8(移动sim卡)。由于电信限制sim卡的对个人服务器的访问，电信的暂时不支持，如果您的服务器已经加入了电信白名单，那应该也是可以正常通信的。
 
 
+
+
+
 # 关于如何部署该云平台
 
 后端采用node开发，有两种办法可以运行服务端程序。
-1. 进入NBIotServer文件夹，运行cnpm i --save
+首先，需要在服务端安装node环境，关于如何安装，请根据不同的操作系统自己寻找教程，之后进行下一步。
+1. 第一种，进入NBIotServer文件夹，运行`cnpm i --save`，安装好依赖包。之后运行`node bin/www`命令即可，此时服务端已运行。
+2. 第二种，使用pm2进行运维。首先安装pm2工具，之后运行`pm2 start 路径/NBIotServer/bin/www`，此时服务端已运行。
